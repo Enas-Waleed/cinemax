@@ -17,8 +17,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.each{
-        it.buildConfigField 'String','MOVIE_DB_API_KEY',"\"Put your themoviedb api key here\""
+    buildTypes.each {
+        it.buildConfigField 'String', 'MOVIE_DB_API_KEY', "\"Put your themoviedb api key here\""
     }
 }
 
@@ -29,5 +29,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.support:support-v4:24.2.1'
     testCompile 'junit:junit:4.12'
 }
