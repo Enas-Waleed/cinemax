@@ -1,8 +1,9 @@
-package xyz.abhaychauhan.cinebuff.cinebuff;
+package xyz.abhaychauhan.cinebuff.cinebuff.cinbuff;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import xyz.abhaychauhan.cinebuff.cinebuff.R;
 import xyz.abhaychauhan.cinebuff.cinebuff.fragment.MoviesFragment;
 
 public class MainActivity extends AppCompatActivity {
