@@ -1,6 +1,7 @@
 package xyz.abhaychauhan.cinebuff.cinebuff.fragment;
 
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,7 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.GridView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,30 +25,56 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
+import xyz.abhaychauhan.cinebuff.cinebuff.adapters.MovieAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.models.Movie;
+import xyz.abhaychauhan.cinebuff.cinebuff.utils.tmDbUrl;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MoviesFragment extends Fragment {
 
+    public final static String LOG_TAG = MoviesFragment.class.getName();
+
+    public MovieAdapter adapter;
 
     public MoviesFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    private void updateMovieScreen(){
+        Uri builtUri = Uri.parse(tmDbUrl.BASE_URL + "popular?").buildUpon()
+                .appendQueryParameter("&api_key",tmDbUrl.API_KEY).build();
+        URL url = null;
+        try{
+            url = new URL(builtUri.toString());
+        }catch (MalformedURLException e){
+            Log.d(LOG_TAG, "updateMovieScreen: Not able to create Url");
+        }
+
+        MovieAsyncTask movieTask = new MovieAsyncTask();
+        movieTask.execute(url.toString());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+        adapter = new MovieAdapter(getContext(),new ArrayList<Movie>());
+        View rootView = inflater.inflate(R.layout.moviefragment,container,false);
+        GridView gridView = (GridView) rootView.findViewById(R.id.movie_grid_box);
+        gridView.setAdapter(adapter);
+        return rootView;
     }
 
-    public static class MovieAsyncTask extends AsyncTask<String, Void, ArrayList<Movie>> {
+    public class MovieAsyncTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
-        public static final String LOG_TAG = MovieAsyncTask.class.getName();
+        public final String LOG_TAG = MovieAsyncTask.class.getName();
 
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
@@ -99,6 +126,14 @@ public class MoviesFragment extends Fragment {
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Movie> movies) {
+            if(movies != null){
+                adapter.clear();
+                adapter.addAll(movies);
+            }
         }
 
         /**
