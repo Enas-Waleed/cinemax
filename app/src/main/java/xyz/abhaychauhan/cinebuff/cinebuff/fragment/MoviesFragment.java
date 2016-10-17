@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +35,10 @@ import xyz.abhaychauhan.cinebuff.cinebuff.utils.tmDbUrl;
 public class MoviesFragment extends Fragment {
 
     private final static String LOG_TAG = MoviesFragment.class.getName();
+
+    LinearLayout noDataFoundView, noNetworkFoundView;
+    ProgressBar progressBar;
+    GridView gridView;
 
     public MovieAdapter adapter;
 
@@ -64,9 +70,17 @@ public class MoviesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //Initialising adapter
         adapter = new MovieAdapter(getContext(), new ArrayList<Movie>());
         View rootView = inflater.inflate(R.layout.moviefragment, container, false);
-        GridView gridView = (GridView) rootView.findViewById(R.id.movie_grid_box);
+
+        //Initialising Views
+        LinearLayout noDataFoundView = (LinearLayout) rootView.findViewById(R.id.no_data_found_view);
+        LinearLayout noNetworkFoundView = (LinearLayout) rootView.findViewById(R.id.no_network_found_view);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar_view);
+
+        //Intialising GridView
+        gridView = (GridView) rootView.findViewById(R.id.movie_grid_box);
         gridView.setAdapter(adapter);
         return rootView;
     }
@@ -130,6 +144,8 @@ public class MoviesFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<Movie> movies) {
             if (movies != null) {
+                progressBar.setVisibility(View.GONE);
+                gridView.setVisibility(View.VISIBLE);
                 adapter.clear();
                 adapter.addAll(movies);
             }

@@ -16,4 +16,7 @@
     <!-- menu xml -->
     <string name="action_settings">Settings</string>
 
+    <string name="no_data_found">No data found !!!</string>
+    <string name="no_network_found">No network found !!!</string>
+
 </resources>
