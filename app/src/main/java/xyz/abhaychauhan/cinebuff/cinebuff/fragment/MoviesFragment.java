@@ -30,9 +30,6 @@ import xyz.abhaychauhan.cinebuff.cinebuff.models.Movie;
 import xyz.abhaychauhan.cinebuff.cinebuff.utils.tmDbUrl;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MoviesFragment extends Fragment {
 
     public final static String LOG_TAG = MoviesFragment.class.getName();
@@ -180,7 +177,7 @@ public class MoviesFragment extends Fragment {
 
             try {
                 JSONObject baseObject = new JSONObject(jsonStringData);
-                JSONArray resultArray = baseObject.getJSONArray("result");
+                JSONArray resultArray = baseObject.getJSONArray("results");
                 for (int i = 0; i < resultArray.length(); i++) {
                     JSONObject movieObject = resultArray.getJSONObject(i);
                     String moviePosterImage = movieObject.getString("poster_path");
