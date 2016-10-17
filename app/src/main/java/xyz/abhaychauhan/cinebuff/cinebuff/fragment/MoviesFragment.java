@@ -46,27 +46,29 @@ public class MoviesFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        updateMovieScreen();
     }
 
-    private void updateMovieScreen(){
+    private void updateMovieScreen() {
         Uri builtUri = Uri.parse(tmDbUrl.BASE_URL + "popular?").buildUpon()
-                .appendQueryParameter("&api_key",tmDbUrl.API_KEY).build();
+                .appendQueryParameter("api_key", tmDbUrl.API_KEY).build();
         URL url = null;
-        try{
+        try {
             url = new URL(builtUri.toString());
-        }catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             Log.d(LOG_TAG, "updateMovieScreen: Not able to create Url");
         }
 
         MovieAsyncTask movieTask = new MovieAsyncTask();
         movieTask.execute(url.toString());
+        //Log.v(LOG_TAG, "updateMovieScreen: " + url.toString());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        adapter = new MovieAdapter(getContext(),new ArrayList<Movie>());
-        View rootView = inflater.inflate(R.layout.moviefragment,container,false);
+        adapter = new MovieAdapter(getContext(), new ArrayList<Movie>());
+        View rootView = inflater.inflate(R.layout.moviefragment, container, false);
         GridView gridView = (GridView) rootView.findViewById(R.id.movie_grid_box);
         gridView.setAdapter(adapter);
         return rootView;
@@ -84,7 +86,7 @@ public class MoviesFragment extends Fragment {
             }
             //Creating URL object
             URL url = createUrl(params[0]);
-
+            //Log.v(LOG_TAG,"URL " + url.toString());
             String jsonResonse = "";
             HttpURLConnection urlConnection = null;
             InputStream inputStream = null;
@@ -130,7 +132,7 @@ public class MoviesFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ArrayList<Movie> movies) {
-            if(movies != null){
+            if (movies != null) {
                 adapter.clear();
                 adapter.addAll(movies);
             }
@@ -175,21 +177,21 @@ public class MoviesFragment extends Fragment {
 
         private ArrayList<Movie> extractDataFromJson(String jsonStringData) {
             ArrayList<Movie> movieList = new ArrayList<Movie>();
-            if (jsonStringData != null) {
-                try {
-                    JSONObject baseObject = new JSONObject(jsonStringData);
-                    JSONArray resultArray = baseObject.getJSONArray("result");
-                    for (int i = 0; i < resultArray.length(); i++) {
-                        JSONObject movieObject = resultArray.getJSONObject(i);
-                        String moviePosterImage = movieObject.getString("poster_path");
-                        int movieId = movieObject.getInt("id");
-                        String movieTitle = movieObject.getString("title");
-                        movieList.add(new Movie(movieId, movieTitle, moviePosterImage));
-                    }
-                } catch (JSONException e) {
-                    Log.e(LOG_TAG, "extractDataFromJson: Not able to create JSONObject !!!");
+
+            try {
+                JSONObject baseObject = new JSONObject(jsonStringData);
+                JSONArray resultArray = baseObject.getJSONArray("result");
+                for (int i = 0; i < resultArray.length(); i++) {
+                    JSONObject movieObject = resultArray.getJSONObject(i);
+                    String moviePosterImage = movieObject.getString("poster_path");
+                    int movieId = movieObject.getInt("id");
+                    String movieTitle = movieObject.getString("title");
+                    movieList.add(new Movie(movieId, movieTitle, moviePosterImage));
                 }
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "extractDataFromJson: Not able to create JSONObject !!!");
             }
+
             return movieList;
         }
     }
