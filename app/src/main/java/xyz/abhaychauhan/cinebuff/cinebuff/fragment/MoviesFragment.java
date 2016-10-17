@@ -32,7 +32,7 @@ import xyz.abhaychauhan.cinebuff.cinebuff.utils.tmDbUrl;
 
 public class MoviesFragment extends Fragment {
 
-    public final static String LOG_TAG = MoviesFragment.class.getName();
+    private final static String LOG_TAG = MoviesFragment.class.getName();
 
     public MovieAdapter adapter;
 

@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".cinbuff.MovieDetailActivity"></activity>
+        <activity android:name=".cinbuff.MovieDetailActivity" />
+        <activity android:name=".utils.SettingsActivity"></activity>
     </application>
 
 </manifest>

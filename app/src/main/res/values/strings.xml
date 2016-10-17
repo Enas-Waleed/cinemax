@@ -1,8 +1,19 @@
 <resources>
     <string name="app_name">Cinebuff</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="movie_dummy_title">Interstellar</string>
+
+    <!--Preference Activity -->
+    <string name="pref_sortby_title">Sort by</string>
+    <string name="pref_sortby_key">sortby</string>
+    <!-- Display list options -->
+    <string name="pref_sortby_popular_label">Popular</string>
+    <string name="pref_sortby_top_rated_label">Top rated</string>
+    <string name="pref_sortby_popular">popular</string>
+    <string name="pref_sortby_top_rated">top_rated</string>
+
+    <!-- menu xml -->
+    <string name="action_settings">Settings</string>
+
 </resources>

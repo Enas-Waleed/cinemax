@@ -9,8 +9,8 @@
         android:id="@+id/movie_image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:minHeight="300dp"
         android:layout_weight="9"
-        android:scaleType="centerCrop"
         tools:src="@drawable/poster" />
 
     <TextView
@@ -20,6 +20,8 @@
         android:layout_weight="1"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textSize="@dimen/movie_title_size"
         tools:text="@string/movie_dummy_title" />
 
