@@ -1,6 +1,9 @@
 package xyz.abhaychauhan.cinebuff.cinebuff.fragment;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -82,6 +85,22 @@ public class MoviesFragment extends Fragment {
         //Intialising GridView
         gridView = (GridView) rootView.findViewById(R.id.movie_grid_box);
         gridView.setAdapter(adapter);
+
+        //Check to see if Device is connected to network or not
+        ConnectivityManager connMgr = (ConnectivityManager) getContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            noDataFoundView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+            //gridView.setVisibility(View.GONE);
+            noNetworkFoundView.setVisibility(View.GONE);
+        } else {
+            //noDataFoundView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            //gridView.setVisibility(View.GONE);
+            noNetworkFoundView.setVisibility(View.VISIBLE);
+        }
         return rootView;
     }
 
@@ -148,6 +167,11 @@ public class MoviesFragment extends Fragment {
                 gridView.setVisibility(View.VISIBLE);
                 adapter.clear();
                 adapter.addAll(movies);
+            } else {
+                progressBar.setVisibility(View.GONE);
+                gridView.setVisibility(View.GONE);
+                noNetworkFoundView.setVisibility(View.GONE);
+                noDataFoundView.setVisibility(View.VISIBLE);
             }
         }
 
