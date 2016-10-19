@@ -2,11 +2,13 @@ package xyz.abhaychauhan.cinebuff.cinebuff.fragment;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,9 +57,23 @@ public class MoviesFragment extends Fragment {
         updateMovieScreen();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     private void updateMovieScreen() {
-        Uri builtUri = Uri.parse(tmDbUrl.BASE_URL + "popular?").buildUpon()
-                .appendQueryParameter("api_key", tmDbUrl.API_KEY).build();
+        final String SORT_BY = "sort_by";
+        final String API_KEY = "api_key";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sort_by = prefs.getString(getString(R.string.pref_sortby_key)
+                , getString(R.string.pref_sortby_popular));
+
+        Uri builtUri = Uri.parse(tmDbUrl.BASE_URL).buildUpon()
+                .appendQueryParameter(SORT_BY, sort_by)
+                .appendQueryParameter(API_KEY, tmDbUrl.API_KEY).build();
+
         URL url = null;
         try {
             url = new URL(builtUri.toString());
@@ -67,7 +83,7 @@ public class MoviesFragment extends Fragment {
 
         MovieAsyncTask movieTask = new MovieAsyncTask();
         movieTask.execute(url.toString());
-        //Log.v(LOG_TAG, "updateMovieScreen: " + url.toString());
+        Log.v(LOG_TAG, "updateMovieScreen: " + url.toString());
     }
 
     @Override

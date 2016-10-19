@@ -9,22 +9,41 @@ public class Movie implements Parcelable {
     private String mTitle;
     private int mId;
     private String mImage;
+    private String mOverview;
+    private String mReleaseDate;
+    private Double mPopularity;
+    private int mVoteCount;
+    private float mVoteAverage;
+    private String mPosterPath;
 
     /**
      * @param id
      * @param title
      * @param image
      */
-    public Movie(int id, String title, String image) {
+    public Movie(int id, String title, String image, String overview, String releaseDate, Double popularity,
+                 int voteCount, float voteAverage, String posterPath) {
         mId = id;
         mTitle = title;
         mImage = image;
+        mOverview = overview;
+        mReleaseDate = releaseDate;
+        mPopularity = popularity;
+        mVoteCount = voteCount;
+        mVoteAverage = voteAverage;
+        mPosterPath = posterPath;
     }
 
     public Movie(Parcel in) {
         mId = in.readInt();
         mTitle = in.readString();
         mImage = in.readString();
+        mOverview = in.readString();
+        mReleaseDate = in.readString();
+        mPopularity = in.readDouble();
+        mVoteCount = in.readInt();
+        mVoteAverage = in.readFloat();
+        mPosterPath = in.readString();
     }
 
     /**
@@ -54,6 +73,60 @@ public class Movie implements Parcelable {
         return mImage;
     }
 
+    /**
+     * Return the Overview of the movie
+     *
+     * @return
+     */
+    public String getOverView() {
+        return mOverview;
+    }
+
+    /**
+     * Return the release date of movie in String format
+     *
+     * @return
+     */
+    public String getReleaseDate() {
+        return mReleaseDate;
+    }
+
+    /**
+     * Return the popularity of the movie
+     *
+     * @return
+     */
+    public Double getPopularity() {
+        return mPopularity;
+    }
+
+    /**
+     * Return the vote count of the movie
+     *
+     * @return
+     */
+    public int getVoteCount() {
+        return mVoteCount;
+    }
+
+    /**
+     * Return the vote average of the movie
+     *
+     * @return
+     */
+    public float getVoteAverage() {
+        return mVoteAverage;
+    }
+
+    /**
+     * Return the poster path of the movie
+     *
+     * @return
+     */
+    public String getPosterPath() {
+        return mPosterPath;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -74,5 +147,11 @@ public class Movie implements Parcelable {
         dest.writeInt(mId);
         dest.writeString(mTitle);
         dest.writeString(mImage);
+        dest.writeString(mOverview);
+        dest.writeString(mReleaseDate);
+        dest.writeDouble(mPopularity);
+        dest.writeInt(mVoteCount);
+        dest.writeFloat(mVoteCount);
+        dest.writeString(mPosterPath);
     }
 }
