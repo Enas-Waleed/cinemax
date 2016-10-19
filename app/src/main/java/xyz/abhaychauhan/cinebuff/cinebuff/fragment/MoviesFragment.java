@@ -236,10 +236,19 @@ public class MoviesFragment extends Fragment {
                 JSONArray resultArray = baseObject.getJSONArray("results");
                 for (int i = 0; i < resultArray.length(); i++) {
                     JSONObject movieObject = resultArray.getJSONObject(i);
+
                     String moviePosterImage = movieObject.getString("poster_path");
+                    String movieOverView = movieObject.getString("overview");
+                    String movieReleaseDate = movieObject.getString("release_date");
                     int movieId = movieObject.getInt("id");
-                    String movieTitle = movieObject.getString("title");
-                    movieList.add(new Movie(movieId, movieTitle, moviePosterImage));
+                    String movieTitle = movieObject.getString("original_title");
+                    String moviePosterPath = movieObject.getString("backdrop_path");
+                    Double moviePopularity = movieObject.getDouble("popularity");
+                    int movieVoteCount = movieObject.getInt("vote_count");
+                    Double movieVoteAverage = movieObject.getDouble("vote_average");
+
+                    movieList.add(new Movie(movieId, movieTitle, moviePosterImage, movieOverView,
+                            movieReleaseDate, moviePopularity, movieVoteCount, movieVoteAverage, moviePosterPath));
                 }
             } catch (JSONException e) {
                 Log.e(LOG_TAG, "extractDataFromJson: Not able to create JSONObject !!!");

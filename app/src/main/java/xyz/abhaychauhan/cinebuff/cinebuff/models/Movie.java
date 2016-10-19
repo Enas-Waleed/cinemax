@@ -13,7 +13,7 @@ public class Movie implements Parcelable {
     private String mReleaseDate;
     private Double mPopularity;
     private int mVoteCount;
-    private float mVoteAverage;
+    private Double mVoteAverage;
     private String mPosterPath;
 
     /**
@@ -22,7 +22,7 @@ public class Movie implements Parcelable {
      * @param image
      */
     public Movie(int id, String title, String image, String overview, String releaseDate, Double popularity,
-                 int voteCount, float voteAverage, String posterPath) {
+                 int voteCount, Double voteAverage, String posterPath) {
         mId = id;
         mTitle = title;
         mImage = image;
@@ -42,7 +42,7 @@ public class Movie implements Parcelable {
         mReleaseDate = in.readString();
         mPopularity = in.readDouble();
         mVoteCount = in.readInt();
-        mVoteAverage = in.readFloat();
+        mVoteAverage = in.readDouble();
         mPosterPath = in.readString();
     }
 
@@ -114,7 +114,7 @@ public class Movie implements Parcelable {
      *
      * @return
      */
-    public float getVoteAverage() {
+    public Double getVoteAverage() {
         return mVoteAverage;
     }
 
@@ -151,7 +151,7 @@ public class Movie implements Parcelable {
         dest.writeString(mReleaseDate);
         dest.writeDouble(mPopularity);
         dest.writeInt(mVoteCount);
-        dest.writeFloat(mVoteCount);
+        dest.writeDouble(mVoteAverage);
         dest.writeString(mPosterPath);
     }
 }
