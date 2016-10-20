@@ -2,6 +2,7 @@ package xyz.abhaychauhan.cinebuff.cinebuff.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
 import xyz.abhaychauhan.cinebuff.cinebuff.adapters.MovieAdapter;
+import xyz.abhaychauhan.cinebuff.cinebuff.cinbuff.MovieDetailActivity;
 import xyz.abhaychauhan.cinebuff.cinebuff.models.Movie;
 import xyz.abhaychauhan.cinebuff.cinebuff.utils.tmDbUrl;
 
@@ -55,12 +58,6 @@ public class MoviesFragment extends Fragment {
     public void onStart() {
         super.onStart();
         updateMovieScreen();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
     }
 
     private void updateMovieScreen() {
@@ -91,7 +88,7 @@ public class MoviesFragment extends Fragment {
                              Bundle savedInstanceState) {
         //Initialising adapter
         adapter = new MovieAdapter(getContext(), new ArrayList<Movie>());
-        View rootView = inflater.inflate(R.layout.moviefragment, container, false);
+        View rootView = inflater.inflate(R.layout.movies_fragment, container, false);
 
         //Initialising Views
         LinearLayout noDataFoundView = (LinearLayout) rootView.findViewById(R.id.no_data_found_view);
@@ -117,6 +114,16 @@ public class MoviesFragment extends Fragment {
             //gridView.setVisibility(View.GONE);
             noNetworkFoundView.setVisibility(View.VISIBLE);
         }
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Movie currentMovie = adapter.getItem(position);
+                Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
+                intent.putExtra("movie", currentMovie);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
@@ -246,9 +253,11 @@ public class MoviesFragment extends Fragment {
                     Double moviePopularity = movieObject.getDouble("popularity");
                     int movieVoteCount = movieObject.getInt("vote_count");
                     Double movieVoteAverage = movieObject.getDouble("vote_average");
+                    String movieLanguage = movieObject.getString("original_language");
 
                     movieList.add(new Movie(movieId, movieTitle, moviePosterImage, movieOverView,
-                            movieReleaseDate, moviePopularity, movieVoteCount, movieVoteAverage, moviePosterPath));
+                            movieReleaseDate, moviePopularity, movieVoteCount, movieVoteAverage
+                            , moviePosterPath, movieLanguage));
                 }
             } catch (JSONException e) {
                 Log.e(LOG_TAG, "extractDataFromJson: Not able to create JSONObject !!!");

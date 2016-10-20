@@ -15,6 +15,7 @@ public class Movie implements Parcelable {
     private int mVoteCount;
     private Double mVoteAverage;
     private String mPosterPath;
+    private String mLanguage;
 
     /**
      * @param id
@@ -22,7 +23,7 @@ public class Movie implements Parcelable {
      * @param image
      */
     public Movie(int id, String title, String image, String overview, String releaseDate, Double popularity,
-                 int voteCount, Double voteAverage, String posterPath) {
+                 int voteCount, Double voteAverage, String posterPath, String language) {
         mId = id;
         mTitle = title;
         mImage = image;
@@ -32,6 +33,7 @@ public class Movie implements Parcelable {
         mVoteCount = voteCount;
         mVoteAverage = voteAverage;
         mPosterPath = posterPath;
+        mLanguage = language;
     }
 
     public Movie(Parcel in) {
@@ -44,6 +46,7 @@ public class Movie implements Parcelable {
         mVoteCount = in.readInt();
         mVoteAverage = in.readDouble();
         mPosterPath = in.readString();
+        mLanguage = in.readString();
     }
 
     /**
@@ -127,6 +130,15 @@ public class Movie implements Parcelable {
         return mPosterPath;
     }
 
+    /**
+     * Return the language of the movie
+     *
+     * @return
+     */
+    public String getLanguage() {
+        return mLanguage;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -153,5 +165,6 @@ public class Movie implements Parcelable {
         dest.writeInt(mVoteCount);
         dest.writeDouble(mVoteAverage);
         dest.writeString(mPosterPath);
+        dest.writeString(mLanguage);
     }
 }
