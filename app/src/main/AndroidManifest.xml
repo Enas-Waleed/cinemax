@@ -11,15 +11,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".cinbuff.MainActivity">
+        <activity android:name=".activity.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".cinbuff.MovieDetailActivity" />
-        <activity android:name=".utils.SettingsActivity"></activity>
     </application>
 
 </manifest>
