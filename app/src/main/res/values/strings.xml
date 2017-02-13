@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Movie Time</string>
+
+    <string name="movie_title">The Secret Life of Pets</string>
+    <string name="movie_overview">The quiet life of a terrier named Max is upended when his owner
+        takes in Duke, a stray whom Max instantly dislikes.</string>
 </resources>
