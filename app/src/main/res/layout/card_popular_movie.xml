@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/ten_dp_dimen"
+    android:layout_marginRight="@dimen/ten_dp_dimen"
+    android:layout_marginTop="@dimen/ten_dp_dimen">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
         android:orientation="vertical">
 
         <FrameLayout
@@ -16,8 +21,8 @@
             <ImageView
                 android:id="@+id/movie_cover_iv"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:scaleType="centerCrop"
+                android:layout_height="200dp"
+                android:scaleType="fitXY"
                 tools:src="@drawable/movie_cover" />
 
             <LinearLayout
@@ -92,14 +97,20 @@
                 android:textColor="@android:color/black"
                 tools:text="@string/movie_title" />
 
-            <TextView
-                android:id="@+id/overview_tv"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                tools:text="@string/movie_overview" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/overview_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    tools:text="@string/movie_overview" />
+
+            </FrameLayout>
 
         </LinearLayout>
 
