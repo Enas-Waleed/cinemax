@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/four_dp_dimen">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/two_dp_dimen"
+        android:layout_marginLeft="@dimen/one_dp_dimen"
+        android:layout_marginRight="@dimen/one_dp_dimen"
+        android:layout_marginTop="@dimen/two_dp_dimen"
+        app:cardCornerRadius="@dimen/two_dp_dimen">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/movie_poster_iv"
+                android:layout_width="match_parent"
+                android:layout_height="176dp"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/movie_cover" />
+
+            <TextView
+                android:id="@+id/movie_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingLeft="@dimen/eight_dp_dimen"
+                android:paddingRight="@dimen/eight_dp_dimen"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="Hello there" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

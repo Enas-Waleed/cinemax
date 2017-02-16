@@ -21,5 +21,6 @@
     <dimen name="six_dp_dimen">6dp</dimen>
     <dimen name="four_dp_dimen">4dp</dimen>
     <dimen name="two_dp_dimen">2dp</dimen>
+    <dimen name="one_dp_dimen">1dp</dimen>
 
 </resources>
