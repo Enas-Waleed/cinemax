@@ -33,8 +33,13 @@ public class TopRatedMovieFragment extends Fragment {
     private RecyclerView recyclerView;
     private TopRatedAdapter adapter;
     private GridLayoutManager gridLayoutManager;
-
     private ArrayList<Movie> moviesList;
+
+    private int pageCount = 1;
+    private int previousTotal = 0;
+    private Boolean loading = true;
+    private int visibleThreshold = 6;
+    private int firstVisibleItem, visibleItemCount, totalItemCount;
 
     public TopRatedMovieFragment() {
 
@@ -50,18 +55,17 @@ public class TopRatedMovieFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.top_rated_movie_rv);
         gridLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
-
         adapter = new TopRatedAdapter(getContext(), moviesList);
-        recyclerView.setAdapter(adapter);
 
-        getTopRatedMovieList();
+        getTopRatedMovieList(pageCount);
+        setupRecyclerViewOnScroll();
 
         return rootView;
     }
 
-    private void getTopRatedMovieList() {
+    private void getTopRatedMovieList(int page) {
         JsonObjectRequest topRatedMovieRequest = new JsonObjectRequest(Request.Method.GET,
-                getTopRatedUrl(), null, new Response.Listener<JSONObject>() {
+                getTopRatedUrl(page), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 updateTopRatedMovieList(response);
@@ -69,10 +73,20 @@ public class TopRatedMovieFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                showSnackBarMessage("Not able to load data!!!");
+                showSnackbarMessage("Not able to load data!!!");
             }
         });
         NetworkController.getInstance(this.getContext()).addToRequestQueue(topRatedMovieRequest);
+    }
+
+    private String getTopRatedUrl(int page) {
+        Uri builtUri = Uri.parse(TmdbUrl.TOP_RATED_URL)
+                .buildUpon()
+                .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
+                .appendQueryParameter(TmdbUrl.LANGUAGE_PARAM, TmdbUrl.LANGUAGE)
+                .appendQueryParameter(TmdbUrl.PAGE_PARAM, Integer.toString(page))
+                .build();
+        return builtUri.toString();
     }
 
     private void updateTopRatedMovieList(JSONObject response) {
@@ -90,16 +104,35 @@ public class TopRatedMovieFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    private String getTopRatedUrl() {
-        Uri builtUri = Uri.parse(TmdbUrl.TOP_RATED_URL)
-                .buildUpon()
-                .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
-                .appendQueryParameter(TmdbUrl.LANGUAGE_PARAM, TmdbUrl.LANGUAGE)
-                .build();
-        return builtUri.toString();
+    private void setupRecyclerViewOnScroll() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                visibleItemCount = recyclerView.getChildCount();
+                totalItemCount = gridLayoutManager.getItemCount();
+                firstVisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                        pageCount++;
+                    }
+                }
+
+                if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                    getTopRatedMovieList(pageCount);
+                    showSnackbarMessage("loading...");
+                    loading = true;
+                }
+            }
+        });
+        recyclerView.setAdapter(adapter);
     }
 
-    private void showSnackBarMessage(String message) {
+    private void showSnackbarMessage(String message) {
         Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
     }
 }

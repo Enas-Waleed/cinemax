@@ -3,6 +3,7 @@ package xyz.abhaychauhan.cinebuff.cinebuff.activity.fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,10 +34,15 @@ public class PopularMovieFragment extends Fragment {
     private static final String TAG = PopularMovieFragment.class.getSimpleName();
 
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private PopularMovieAdapter adapter;
-
     private ArrayList<Movie> movieList;
+
+    private int pageCount = 1;
+    private int previousTotal = 0;
+    private Boolean loading = true;
+    private int visibleThreshold = 2;
+    private int firstVisibleItem, visibleItemCount, totalItemCount;
 
     public PopularMovieFragment() {
 
@@ -54,16 +60,14 @@ public class PopularMovieFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PopularMovieAdapter(getActivity(), movieList);
 
-        recyclerView.setAdapter(adapter);
-
-        getMovieList();
+        getMovieList(pageCount);
+        setupRecyclerViewOnScroll();
         return rootView;
     }
 
-    private void getMovieList() {
-        //RequestQueue queue = Volley.newRequestQueue(getContext());
+    private void getMovieList(int page) {
         JsonObjectRequest popularMovieJsonRequest = new JsonObjectRequest(Request.Method.GET,
-                generateUrl(), null,
+                generateUrl(page), null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -76,6 +80,15 @@ public class PopularMovieFragment extends Fragment {
             }
         });
         NetworkController.getInstance(this.getContext()).addToRequestQueue(popularMovieJsonRequest);
+    }
+
+    private String generateUrl(int page) {
+        Uri builtUri = Uri.parse(TmdbUrl.POPULAR_MOVIES_URL).buildUpon()
+                .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
+                .appendQueryParameter(TmdbUrl.LANGUAGE_PARAM, TmdbUrl.LANGUAGE)
+                .appendQueryParameter(TmdbUrl.PAGE_PARAM, Integer.toString(page))
+                .build();
+        return builtUri.toString();
     }
 
     private void updateMoviesList(JSONObject response) {
@@ -95,12 +108,36 @@ public class PopularMovieFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    private String generateUrl() {
-        Uri builtUri = Uri.parse(TmdbUrl.POPULAR_MOVIES_URL).buildUpon()
-                .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
-                .appendQueryParameter(TmdbUrl.LANGUAGE_PARAM, TmdbUrl.LANGUAGE)
-                .build();
-        return builtUri.toString();
+    private void setupRecyclerViewOnScroll() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                visibleItemCount = recyclerView.getChildCount();
+                totalItemCount = layoutManager.getItemCount();
+                firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                        pageCount++;
+                    }
+                }
+
+                if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                    getMovieList(pageCount);
+                    showSnackbarMessage("loading...");
+                    loading = true;
+                }
+            }
+        });
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void showSnackbarMessage(String message) {
+        Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
     }
 
 }
