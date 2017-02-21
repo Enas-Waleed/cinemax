@@ -7,4 +7,9 @@
     <string name="tagline">Every fairy tale has a dark side.</string>
     <string name="synopsis">Synopsis</string>
     <string name="movie_synopsis_large">When a wounded Christian Grey tries to entice a cautious Ana Steele back into his life, she demands a new arrangement before she will give him another chance. As the two begin to build trust and find stability, shadowy figures from Christian’s past start to circle the couple, determined to destroy their hopes for a future together.</string>
+    <string name="trailers">Trailers</string>
+    <string name="trailer_name">Fifty Shades Darker - Official Trailer 2</string>
+    <string name="youtube">YouTube</string>
+    <string name="site">Site : </string>
+    <string name="quality">Quality : </string>
 </resources>
