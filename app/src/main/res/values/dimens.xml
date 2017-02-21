@@ -14,9 +14,12 @@
 
     <!-- Circle Dimens -->
     <dimen name="circle_dimen">48dp</dimen>
-    <dimen name="circle_radius_dimen">24dp</dimen>4
+    <dimen name="circle_radius_dimen">24dp</dimen>
+
+    <dimen name="splash_logo_dimen">180dp</dimen>
 
     <dimen name="twenty_dp_dimen">20dp</dimen>
+    <dimen name="sixteen_dp_dimen">16dp</dimen>
     <dimen name="ten_dp_dimen">10dp</dimen>
     <dimen name="eight_dp_dimen">8dp</dimen>
     <dimen name="six_dp_dimen">6dp</dimen>
