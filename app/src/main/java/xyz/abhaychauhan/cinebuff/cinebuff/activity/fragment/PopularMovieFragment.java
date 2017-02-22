@@ -95,6 +95,7 @@ public class PopularMovieFragment extends Fragment {
         JSONArray results = response.optJSONArray("results");
         for (int i = 0; i < results.length(); i++) {
             JSONObject movieObject = results.optJSONObject(i);
+            int id = movieObject.optInt("id");
             String posterPath = movieObject.optString("poster_path");
             String overview = movieObject.optString("overview");
             String title = movieObject.optString("original_title");
@@ -102,7 +103,7 @@ public class PopularMovieFragment extends Fragment {
             double voteAverage = movieObject.optDouble("vote_average");
             Log.d(TAG, "Object : " + movieObject.toString());
 
-            Movie movie = new Movie(title, overview, voteCount, voteAverage, posterPath);
+            Movie movie = new Movie(id, title, overview, voteCount, voteAverage, posterPath);
             movieList.add(movie);
         }
         adapter.notifyDataSetChanged();

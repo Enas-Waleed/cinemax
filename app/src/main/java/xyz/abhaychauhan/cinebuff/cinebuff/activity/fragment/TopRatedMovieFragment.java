@@ -95,10 +95,11 @@ public class TopRatedMovieFragment extends Fragment {
             JSONObject movieObject = results.optJSONObject(index);
             String poster_path = movieObject.optString("poster_path");
             String overview = movieObject.optString("overview");
+            Integer id = movieObject.optInt("id");
             String title = movieObject.optString("title");
             int vote_count = movieObject.optInt("vote_count");
             Double vote_average = movieObject.optDouble("vote_average");
-            Movie movie = new Movie(title, overview, vote_count, vote_average, poster_path);
+            Movie movie = new Movie(id, title, overview, vote_count, vote_average, poster_path);
             moviesList.add(movie);
         }
         adapter.notifyDataSetChanged();
