@@ -1,6 +1,7 @@
 package xyz.abhaychauhan.cinebuff.cinebuff.activity.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class CommonUtils {
 
@@ -38,6 +39,27 @@ public class CommonUtils {
             return votesCount % 1000 + "K";
         }
         return Integer.toString(votesCount);
+    }
+
+    /**
+     * Convert the list data into comma separated string and return the string
+     *
+     * @param list
+     * @return
+     */
+    public static String getFormattedString(ArrayList<String> list) {
+        String text = "";
+        if (list != null) {
+            for (int index = 0; index < list.size(); index++) {
+                text += list.get(index);
+                if (index != list.size() - 1) {
+                    text += ", ";
+                }
+            }
+        } else {
+            text += "Not found";
+        }
+        return text;
     }
 
 }

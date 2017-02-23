@@ -14,13 +14,19 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.MovieDetail;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.CommonUtils;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -69,6 +75,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         ButterKnife.bind(this);
         // Retrieve movie id from intent
         Intent intent = getIntent();
@@ -77,6 +86,24 @@ public class MovieDetailActivity extends AppCompatActivity {
         // Generating movie api url
         String movieUrl = generateUrl(movieId);
         performJsonNetworkRequest(movieUrl);
+    }
+
+    private void displayData(MovieDetail movie) {
+        Picasso.with(this).load(TmdbUrl.IMAGE_BASE_URL + movie.getBackdropPath())
+                .into(backdropImageView);
+        Picasso.with(this).load(TmdbUrl.IMAGE_BASE_URL + movie.getPosterPath())
+                .into(posterImageView);
+
+        movieTitleTv.setText(movie.getTitle());
+        movieTaglineTv.setText(movie.getTagline());
+        movieVotesTv.setText(CommonUtils.getFormattedVotes(movie.getVote()));
+        movieTimeTv.setText(CommonUtils.getFormattedMovieTime(movie.getRuntime()));
+        movieReleaseDateTv.setText(CommonUtils.getFormattedDate(movie.getReleaseDate()));
+        movieLanguageTv.setText(CommonUtils.getFormattedString(movie.getLanguages()));
+        movieGenresTv.setText(CommonUtils.getFormattedString(movie.getGenres()));
+        movieRatingTv.setText(movie.getRating().toString());
+        movieSynopsisTv.setText(movie.getSynopsis());
+
     }
 
     /**
@@ -92,8 +119,55 @@ public class MovieDetailActivity extends AppCompatActivity {
         return builtUri.toString();
     }
 
-    private MovieDetail getMovieData(JSONObject data){
-        return null;
+    /**
+     * This function retrieve data from JSON Object, then create MovieDetail object from that
+     * data and then return that object
+     *
+     * @param data
+     * @return
+     */
+    private MovieDetail getMovieData(JSONObject data) {
+        String backdropPath = data.optString("backdrop_path");
+        // Retrieving movie genres
+        JSONArray genres = data.optJSONArray("genres");
+        ArrayList<String> genresList = new ArrayList<>();
+        for (int index = 0; index < genres.length(); index++) {
+            JSONObject genre = genres.optJSONObject(index);
+            String genreName = genre.optString("name");
+            genresList.add(genreName);
+        }
+
+        int id = data.optInt("id");
+
+        String title = data.optString("original_title");
+        String synopsis = data.optString("overview");
+
+        String posterPath = data.optString("poster_path");
+
+        String releaseDate = data.optString("release_date");
+
+        int runtime = data.optInt("runtime");
+
+        // Retrieving languages spoken in movie
+        JSONArray spokenLanguages = data.optJSONArray("spoken_languages");
+        ArrayList<String> languages = new ArrayList<>();
+        for (int index = 0; index < spokenLanguages.length(); index++) {
+            JSONObject language = spokenLanguages.optJSONObject(index);
+            String languageName = language.optString("name");
+            languages.add(languageName);
+        }
+
+        String status = data.optString("status");
+        String tagline = data.optString("tagline");
+
+        Double rating = data.optDouble("vote_average");
+        int votes = data.optInt("vote_count");
+
+        MovieDetail movieDetail = new MovieDetail(backdropPath, genresList, id,
+                title, synopsis, posterPath, releaseDate, runtime, languages,
+                status, rating, votes, tagline);
+
+        return movieDetail;
     }
 
     /**
@@ -105,7 +179,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        getMovieData(response);
+                        MovieDetail movie = getMovieData(response);
+                        displayData(movie);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -113,6 +188,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 showSnackbarMessage("Not able to fetch the data!!!");
             }
         });
+        NetworkController.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     private void showSnackbarMessage(String message) {

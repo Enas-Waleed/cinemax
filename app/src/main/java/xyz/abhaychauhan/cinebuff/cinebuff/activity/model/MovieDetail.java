@@ -12,14 +12,16 @@ public class MovieDetail {
     private String posterPath;
     private String releaseDate;
     private int runtime;
+    private ArrayList<String> languages;
     private String status;
-    private float rating;
+    private Double rating;
     private int vote;
     private String tagline;
 
     public MovieDetail(String backdropPath, ArrayList<String> genres, int id, String title,
                        String synopsis, String posterPath, String releaseDate, int runtime,
-                       String status, float rating, int vote, String tagline) {
+                       ArrayList<String> languages, String status, Double rating, int vote,
+                       String tagline) {
         this.backdropPath = backdropPath;
         this.genres = genres;
         this.id = id;
@@ -28,6 +30,7 @@ public class MovieDetail {
         this.posterPath = posterPath;
         this.releaseDate = releaseDate;
         this.runtime = runtime;
+        this.languages = languages;
         this.status = status;
         this.rating = rating;
         this.vote = vote;
@@ -66,11 +69,15 @@ public class MovieDetail {
         return this.runtime;
     }
 
+    public ArrayList<String> getLanguages() {
+        return this.languages;
+    }
+
     public String getStatus() {
         return this.status;
     }
 
-    public float getRating() {
+    public Double getRating() {
         return this.rating;
     }
 
