@@ -1,5 +1,6 @@
 package xyz.abhaychauhan.cinebuff.cinebuff.activity.fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.activity.MovieDetailActivity;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.PopularMovieAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.Movie;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
@@ -62,6 +64,18 @@ public class PopularMovieFragment extends Fragment {
 
         getMovieList(pageCount);
         setupRecyclerViewOnScroll();
+
+        PopularMovieAdapter.OnItemClickListener onItemClickListener = new PopularMovieAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getContext(), MovieDetailActivity.class);
+                Movie movie = movieList.get(position);
+                intent.putExtra("movie_id", Integer.toString(movie.getId()));
+                startActivity(intent);
+            }
+        };
+
+        adapter.setOnItemClickListener(onItemClickListener);
         return rootView;
     }
 

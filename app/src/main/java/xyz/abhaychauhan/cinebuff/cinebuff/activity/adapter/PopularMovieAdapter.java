@@ -18,15 +18,20 @@ import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
 public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapter.PopularMovieViewHolder> {
 
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
     private ArrayList<Movie> moviesList;
     private Context context;
+    OnItemClickListener mItemClickListener;
 
     public PopularMovieAdapter(Context context, ArrayList<Movie> moviesList) {
         this.context = context;
         this.moviesList = moviesList;
     }
 
-    public class PopularMovieViewHolder extends RecyclerView.ViewHolder {
+    public class PopularMovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView coverPosterImageView;
         public TextView titleTextView;
@@ -34,13 +39,22 @@ public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapte
         public TextView votesTextView;
         public TextView voteAverageTextView;
 
-        public PopularMovieViewHolder(View view) {
-            super(view);
-            coverPosterImageView = (ImageView) view.findViewById(R.id.movie_cover_iv);
-            titleTextView = (TextView) view.findViewById(R.id.title_tv);
-            overviewTextView = (TextView) view.findViewById(R.id.overview_tv);
-            votesTextView = (TextView) view.findViewById(R.id.votes_count_tv);
-            voteAverageTextView = (TextView) view.findViewById(R.id.votes_average_tv);
+        public PopularMovieViewHolder(View itemView) {
+            super(itemView);
+            coverPosterImageView = (ImageView) itemView.findViewById(R.id.movie_cover_iv);
+            titleTextView = (TextView) itemView.findViewById(R.id.title_tv);
+            overviewTextView = (TextView) itemView.findViewById(R.id.overview_tv);
+            votesTextView = (TextView) itemView.findViewById(R.id.votes_count_tv);
+            voteAverageTextView = (TextView) itemView.findViewById(R.id.votes_average_tv);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(itemView, getPosition());
+            }
         }
     }
 
@@ -70,5 +84,9 @@ public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapte
 
     private Context getContext() {
         return this.context;
+    }
+
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
     }
 }

@@ -22,7 +22,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.MovieDetail;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.CommonUtils;
@@ -75,10 +74,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //ButterKnife.bind(this);
 
-        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //ButterKnife.bind(this);
         // Retrieve movie id from intent
         Intent intent = getIntent();
         String movieId = intent.getStringExtra("movie_id");
