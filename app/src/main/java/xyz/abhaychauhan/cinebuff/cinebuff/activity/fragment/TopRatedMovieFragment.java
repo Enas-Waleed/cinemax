@@ -1,5 +1,6 @@
 package xyz.abhaychauhan.cinebuff.cinebuff.activity.fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,13 +23,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.activity.MovieDetailActivity;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.TopRatedAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.Movie;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
 
-public class TopRatedMovieFragment extends Fragment {
+public class TopRatedMovieFragment extends Fragment implements
+        TopRatedAdapter.OnItemClickListener{
 
     private RecyclerView recyclerView;
     private TopRatedAdapter adapter;
@@ -47,20 +50,30 @@ public class TopRatedMovieFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_movie_top_rated, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_movie_top_rated,
+                container, false);
 
         moviesList = new ArrayList<>();
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.top_rated_movie_rv);
         gridLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
-        adapter = new TopRatedAdapter(getContext(), moviesList);
+        adapter = new TopRatedAdapter(getContext(), moviesList, this);
 
         getTopRatedMovieList(pageCount);
         setupRecyclerViewOnScroll();
 
         return rootView;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        int movieId = moviesList.get(position).getId();
+        Intent intent = new Intent(getContext(), MovieDetailActivity.class);
+        intent.putExtra("movieId", Integer.toString(movieId));
+        startActivity(intent);
     }
 
     private void getTopRatedMovieList(int page) {

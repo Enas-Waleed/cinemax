@@ -18,20 +18,23 @@ import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
 public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapter.PopularMovieViewHolder> {
 
+    private ArrayList<Movie> moviesList;
+    private Context context;
+    private OnItemClickListener listener;
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 
-    private ArrayList<Movie> moviesList;
-    private Context context;
-    OnItemClickListener mItemClickListener;
-
-    public PopularMovieAdapter(Context context, ArrayList<Movie> moviesList) {
+    public PopularMovieAdapter(Context context, ArrayList<Movie> moviesList,
+                               OnItemClickListener listener) {
         this.context = context;
         this.moviesList = moviesList;
+        this.listener = listener;
     }
 
-    public class PopularMovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class PopularMovieViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
 
         public ImageView coverPosterImageView;
         public TextView titleTextView;
@@ -52,9 +55,8 @@ public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapte
 
         @Override
         public void onClick(View v) {
-            if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(itemView, getPosition());
-            }
+            int clickedPosition = getAdapterPosition();
+            listener.onItemClick(v, clickedPosition);
         }
     }
 
@@ -86,7 +88,4 @@ public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapte
         return this.context;
     }
 
-    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
-    }
 }

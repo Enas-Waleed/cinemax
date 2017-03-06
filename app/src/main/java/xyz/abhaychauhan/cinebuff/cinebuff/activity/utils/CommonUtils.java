@@ -12,6 +12,7 @@ public class CommonUtils {
      * @return
      */
     public static String getFormattedDate(String date) {
+        // TODO : (fix) Application crashing because of some extra Y
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, YYYY");
         return simpleDateFormat.format(date);
     }

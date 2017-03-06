@@ -21,13 +21,21 @@ public class TopRatedAdapter extends RecyclerView.Adapter<TopRatedAdapter.TopRat
 
     private Context context;
     private ArrayList<Movie> movies;
+    private OnItemClickListener listener;
 
-    public TopRatedAdapter(Context context, ArrayList<Movie> movies) {
+    public TopRatedAdapter(Context context, ArrayList<Movie> movies,
+                           OnItemClickListener listener) {
         this.context = context;
         this.movies = movies;
+        this.listener = listener;
     }
 
-    public class TopRatedMovieHolder extends RecyclerView.ViewHolder {
+    public interface OnItemClickListener{
+        void onItemClick(View view, int position);
+    }
+
+    public class TopRatedMovieHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
 
         public ImageView moviePosterImageView;
         public TextView movieTitleTextView;
@@ -36,6 +44,13 @@ public class TopRatedAdapter extends RecyclerView.Adapter<TopRatedAdapter.TopRat
             super(view);
             moviePosterImageView = (ImageView) view.findViewById(R.id.movie_poster_iv);
             movieTitleTextView = (TextView) view.findViewById(R.id.movie_title_tv);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            listener.onItemClick(v, clickedPosition);
         }
     }
 

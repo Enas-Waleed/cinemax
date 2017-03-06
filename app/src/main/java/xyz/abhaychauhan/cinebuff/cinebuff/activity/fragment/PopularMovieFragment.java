@@ -31,7 +31,8 @@ import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
 
-public class PopularMovieFragment extends Fragment {
+public class PopularMovieFragment extends Fragment implements
+        PopularMovieAdapter.OnItemClickListener {
 
     private static final String TAG = PopularMovieFragment.class.getSimpleName();
 
@@ -60,23 +61,20 @@ public class PopularMovieFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.popular_movie_rv);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new PopularMovieAdapter(getActivity(), movieList);
+        adapter = new PopularMovieAdapter(getActivity(), movieList, this);
 
         getMovieList(pageCount);
         setupRecyclerViewOnScroll();
 
-        PopularMovieAdapter.OnItemClickListener onItemClickListener = new PopularMovieAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getContext(), MovieDetailActivity.class);
-                Movie movie = movieList.get(position);
-                intent.putExtra("movie_id", Integer.toString(movie.getId()));
-                startActivity(intent);
-            }
-        };
-
-        adapter.setOnItemClickListener(onItemClickListener);
         return rootView;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        int movieId = movieList.get(position).getId();
+        Intent intent = new Intent(getContext(), MovieDetailActivity.class);
+        intent.putExtra("movieId", Integer.toString(movieId));
+        startActivity(intent);
     }
 
     private void getMovieList(int page) {

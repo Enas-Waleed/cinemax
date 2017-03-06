@@ -7,6 +7,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.MovieDetail;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.CommonUtils;
@@ -74,15 +76,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        //ButterKnife.bind(this);
+        ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //ButterKnife.bind(this);
         // Retrieve movie id from intent
         Intent intent = getIntent();
-        String movieId = intent.getStringExtra("movie_id");
+        String movieId = intent.getStringExtra("movieId");
 
         // Generating movie api url
         String movieUrl = generateUrl(movieId);
@@ -99,7 +99,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         movieTaglineTv.setText(movie.getTagline());
         movieVotesTv.setText(CommonUtils.getFormattedVotes(movie.getVote()));
         movieTimeTv.setText(CommonUtils.getFormattedMovieTime(movie.getRuntime()));
-        movieReleaseDateTv.setText(CommonUtils.getFormattedDate(movie.getReleaseDate()));
+        movieReleaseDateTv.setText(movie.getReleaseDate());
         movieLanguageTv.setText(CommonUtils.getFormattedString(movie.getLanguages()));
         movieGenresTv.setText(CommonUtils.getFormattedString(movie.getGenres()));
         movieRatingTv.setText(movie.getRating().toString());
@@ -117,6 +117,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         Uri builtUri = Uri.parse(TmdbUrl.TMDB_BASE_URL + movieId).buildUpon()
                 .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
                 .build();
+        Log.d("Movie", "generateUrl: " + builtUri.toString());
         return builtUri.toString();
     }
 
