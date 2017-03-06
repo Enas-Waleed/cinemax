@@ -18,4 +18,7 @@ public class TmdbUrl {
     public static final String API_KEY = "661beb6fe6cbb63c894b5a47c9275675";
     public static final String LANGUAGE = "en-US";
 
+    public static final String YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%s";
+    public static final String YOUTUBE_THUMB_URL = "http://img.youtube.com/vi/%s/mqdefault.jpg";
+
 }

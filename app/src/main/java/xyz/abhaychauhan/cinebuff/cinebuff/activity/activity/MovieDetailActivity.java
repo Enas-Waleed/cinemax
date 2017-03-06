@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,16 +24,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.TrailerAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.MovieDetail;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.Trailer;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.CommonUtils;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements
+        TrailerAdapter.TrailerClickListener {
 
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
@@ -71,6 +78,13 @@ public class MovieDetailActivity extends AppCompatActivity {
     @BindView(R.id.movie_synopsis_tv)
     TextView movieSynopsisTv;
 
+    @BindView(R.id.trailer)
+    RecyclerView trailerRv;
+
+    private LinearLayoutManager trailerLayoutManager;
+    private TrailerAdapter trailerAdapter;
+    private List<Trailer> trailerList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +102,10 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         // Generating movie api url
         String movieUrl = generateUrl(movieId);
-        performJsonNetworkRequest(movieUrl);
+        String movieTrailerUrl = generateMovieTrailerUrl(movieId);
+        performJsonNetworkRequest(movieUrl, movieTrailerUrl);
+
+        setupTrailerRecyclerView();
     }
 
     /**
@@ -126,7 +143,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         Uri builtUri = Uri.parse(TmdbUrl.TMDB_BASE_URL + movieId).buildUpon()
                 .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
                 .build();
-        Log.d("Movie", "generateUrl: " + builtUri.toString());
         return builtUri.toString();
     }
 
@@ -140,6 +156,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         Uri builtUri = Uri.parse(String.format(TmdbUrl.MOVIE_TRAILER_URL, movieId)).buildUpon()
                 .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
                 .build();
+        Log.d("MovieDetail", "generateMovieTrailerUrl: " + builtUri.toString());
         return builtUri.toString();
     }
 
@@ -196,14 +213,43 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     /**
+     * This function return the Trailer object lists
+     *
+     * @param data Contains the json data of movie trailer
+     * @return list of Trailers object
+     */
+    private ArrayList<Trailer> getTrailerList(JSONObject data){
+        ArrayList<Trailer> trailers = new ArrayList<>();
+        JSONArray results = data.optJSONArray("results");
+        for(int index = 0; index < results.length(); index++){
+            JSONObject object = results.optJSONObject(index);
+            String id = object.optString("id");
+            String key = object.optString("key");
+            String name = object.optString("name");
+            String site = object.optString("site");
+            String size = object.optString("size");
+            Trailer trailer = new Trailer(id, name, key, site, size);
+            trailers.add(trailer);
+        }
+        return trailers;
+    }
+
+    @Override
+    public void onTrailerClick(View view, int position) {
+        showSnackbarMessage(trailerList.get(position).getName());
+    }
+
+    /**
      * This function performs network request on the api url and
      * pass the response as a parameter to getMovieData() function
      *
-     * @param url Url used to perform network request
+     * @param movieUrl movie url
+     * @param movieTrailerUrl movie trailer url
      */
-    private void performJsonNetworkRequest(String url) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
+    private void performJsonNetworkRequest(String movieUrl, String movieTrailerUrl) {
+        // Request for movie data
+        JsonObjectRequest movieRequest = new JsonObjectRequest(Request.Method.GET, movieUrl,
+                null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         MovieDetail movie = getMovieData(response);
@@ -215,7 +261,24 @@ public class MovieDetailActivity extends AppCompatActivity {
                 showSnackbarMessage("Not able to fetch the data!!!");
             }
         });
-        NetworkController.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        NetworkController.getInstance(this).addToRequestQueue(movieRequest);
+
+        // Request for movie trailer data
+        JsonObjectRequest movieTrailerRequest = new JsonObjectRequest(Request.Method.GET,
+                movieTrailerUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                trailerList = getTrailerList(response);
+                trailerAdapter.notifyDataSetChanged();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showSnackbarMessage("Not able to load Trailers");
+            }
+        });
+        NetworkController.getInstance(this).addToRequestQueue(movieTrailerRequest);
     }
 
     /**
@@ -228,6 +291,21 @@ public class MovieDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(title);
+    }
+
+    /**
+     * This function setup the trailer recycler view, initialize trailers array list,
+     * set layout manager for trailer recycler view
+     */
+    private void setupTrailerRecyclerView(){
+        trailerList = new ArrayList<>();
+
+        trailerLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
+                false);
+        trailerAdapter = new TrailerAdapter(this, trailerList, this);
+
+        trailerRv.setLayoutManager(trailerLayoutManager);
+        trailerRv.setAdapter(trailerAdapter);
     }
 
     /**

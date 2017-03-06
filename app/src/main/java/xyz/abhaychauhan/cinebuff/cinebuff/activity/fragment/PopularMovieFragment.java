@@ -115,7 +115,6 @@ public class PopularMovieFragment extends Fragment implements
             String title = movieObject.optString("original_title");
             int voteCount = movieObject.optInt("vote_count");
             double voteAverage = movieObject.optDouble("vote_average");
-            Log.d(TAG, "Object : " + movieObject.toString());
 
             Movie movie = new Movie(id, title, overview, voteCount, voteAverage, posterPath);
             movieList.add(movie);

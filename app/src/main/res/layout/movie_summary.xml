@@ -180,7 +180,6 @@
             android:textAlignment="textStart"
             tools:text="@string/movie_synopsis_large" />
 
-
         <include
             layout="@layout/layout_movie_trailer"
             android:layout_width="match_parent"

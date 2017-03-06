@@ -68,7 +68,7 @@
                     android:text="@string/quality" />
 
                 <TextView
-                    android:id="@+id/trailer_quality"
+                    android:id="@+id/trailer_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
