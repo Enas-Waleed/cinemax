@@ -71,8 +71,10 @@ public class TopRatedMovieFragment extends Fragment implements
     @Override
     public void onItemClick(View view, int position) {
         int movieId = moviesList.get(position).getId();
+        String movieTitle = moviesList.get(position).getTitle();
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("movieId", Integer.toString(movieId));
+        intent.putExtra("movieTitle", movieTitle);
         startActivity(intent);
     }
 

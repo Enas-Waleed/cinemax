@@ -78,17 +78,26 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-
         // Retrieve movie id from intent
         Intent intent = getIntent();
         String movieId = intent.getStringExtra("movieId");
+        String movieTitle = intent.getStringExtra("movieTitle");
+
+        // Setting up toolbar
+        setupToolbar(movieTitle);
 
         // Generating movie api url
         String movieUrl = generateUrl(movieId);
         performJsonNetworkRequest(movieUrl);
     }
 
+    /**
+     * This function display the data about movie in their respective views by using
+     * the information stored in the MovieDetail object passed as an argument to the
+     * function
+     *
+     * @param movie MovieDetail Object containing the information about the movie
+     */
     private void displayData(MovieDetail movie) {
         Picasso.with(this).load(TmdbUrl.IMAGE_BASE_URL + movie.getBackdropPath())
                 .into(backdropImageView);
@@ -110,8 +119,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     /**
      * This function return the movie url
      *
-     * @param movieId
-     * @return
+     * @param movieId String containing the unique movie id
+     * @return Api url for the movie with movieId equal to @param movieId
      */
     private String generateUrl(String movieId) {
         Uri builtUri = Uri.parse(TmdbUrl.TMDB_BASE_URL + movieId).buildUpon()
@@ -122,11 +131,25 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     /**
+     * This function return the movie trailers url
+     *
+     * @param movieId String containing the unique movie id
+     * @return
+     */
+    private String generateMovieTrailerUrl(String movieId){
+        Uri builtUri = Uri.parse(String.format(TmdbUrl.MOVIE_TRAILER_URL, movieId)).buildUpon()
+                .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
+                .build();
+        return builtUri.toString();
+    }
+
+    /**
      * This function retrieve data from JSON Object, then create MovieDetail object from that
      * data and then return that object
      *
-     * @param data
-     * @return
+     * @param data JsonObject retrieved from the movie api endpoint
+     * @return movieDetail An object containing the information of the movie whose
+     * id is sent as a extra string to the activity via intent
      */
     private MovieDetail getMovieData(JSONObject data) {
         String backdropPath = data.optString("backdrop_path");
@@ -175,6 +198,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     /**
      * This function performs network request on the api url and
      * pass the response as a parameter to getMovieData() function
+     *
+     * @param url Url used to perform network request
      */
     private void performJsonNetworkRequest(String url) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -193,6 +218,24 @@ public class MovieDetailActivity extends AppCompatActivity {
         NetworkController.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
+    /**
+     * This function setups the toolbar, and set it title to
+     * the movie title
+     *
+     * @param title Title of the movie
+     */
+    private void setupToolbar(String title){
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(title);
+    }
+
+    /**
+     * This function displays Snackbar with a particular message
+     * that is sent as a parameter to the function
+     *
+     * @param message Message to display in the snackbar
+     */
     private void showSnackbarMessage(String message) {
         Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
     }

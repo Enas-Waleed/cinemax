@@ -72,8 +72,10 @@ public class PopularMovieFragment extends Fragment implements
     @Override
     public void onItemClick(View view, int position) {
         int movieId = movieList.get(position).getId();
+        String movieTitle = movieList.get(position).getTitle();
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("movieId", Integer.toString(movieId));
+        intent.putExtra("movieTitle", movieTitle);
         startActivity(intent);
     }
 
