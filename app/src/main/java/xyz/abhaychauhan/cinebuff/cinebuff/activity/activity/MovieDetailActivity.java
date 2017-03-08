@@ -28,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
-import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.PopularMovieAdapter;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.SimilarMovieAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.TrailerAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.Movie;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.MovieDetail;
@@ -38,7 +38,7 @@ import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
 public class MovieDetailActivity extends AppCompatActivity implements
-        TrailerAdapter.TrailerClickListener, PopularMovieAdapter.OnItemClickListener {
+        TrailerAdapter.TrailerClickListener, SimilarMovieAdapter.SimilarMovieItemClickListener {
 
     private static final String TAG = MovieDetailActivity.class.getSimpleName();
 
@@ -91,7 +91,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
     private LinearLayoutManager similarMovieLayoutManager;
 
     private TrailerAdapter trailerAdapter;
-    private PopularMovieAdapter similarMovieAdapter;
+    private SimilarMovieAdapter similarMovieAdapter;
 
     private List<Trailer> trailerList;
     private ArrayList<Movie> similarMovieList;
@@ -293,7 +293,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    public void onSimilarMovieItemClick(View view, int position) {
         Movie movie = similarMovieList.get(position);
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("movieId", Integer.toString(movie.getId()));
@@ -398,7 +398,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
         similarMovieLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
                 false);
 
-        similarMovieAdapter = new PopularMovieAdapter(this, similarMovieList, this);
+        similarMovieAdapter = new SimilarMovieAdapter(this, similarMovieList, this);
 
         similarMovieRv.setLayoutManager(similarMovieLayoutManager);
         similarMovieRv.setAdapter(similarMovieAdapter);

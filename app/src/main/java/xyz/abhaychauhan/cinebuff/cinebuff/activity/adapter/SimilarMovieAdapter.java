@@ -50,6 +50,8 @@ public class SimilarMovieAdapter extends RecyclerView.Adapter
             moviePosterIv = (ImageView) view.findViewById(R.id.movie_poster_iv);
             movieTitleTv = (TextView) view.findViewById(R.id.movie_title_tv);
             movieRatingTv = (TextView) view.findViewById(R.id.movie_rating_tv);
+
+            view.setOnClickListener(this);
         }
 
         @Override

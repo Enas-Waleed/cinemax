@@ -187,6 +187,12 @@
             android:layout_height="wrap_content" />
 
         <include
+            layout="@layout/layout_lead_cast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <include
+            android:layout_marginTop="@dimen/ten_dp_dimen"
             layout="@layout/layout_movie_similar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

@@ -15,4 +15,6 @@
     <string name="similar_movies">Similar Movies</string>
     <string name="rating_value">4.5</string>
     <string name="movie_time">1h 58 min</string>
+    <string name="lead_cast">Lead Cast</string>
+    <string name="actor_name">Jamie Dornan</string>
 </resources>
