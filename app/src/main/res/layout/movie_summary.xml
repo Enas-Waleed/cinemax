@@ -159,7 +159,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/grey" />
+            android:background="@color/grey_400" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -176,6 +176,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/sixteen_dp_dimen"
             android:layout_marginRight="@dimen/sixteen_dp_dimen"
+            android:layout_marginBottom="@dimen/sixteen_dp_dimen"
             android:lineSpacingExtra="4dp"
             android:textAlignment="textStart"
             tools:text="@string/movie_synopsis_large" />
@@ -183,14 +184,12 @@
         <include
             layout="@layout/layout_movie_trailer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/sixteen_dp_dimen" />
+            android:layout_height="wrap_content" />
 
         <include
             layout="@layout/layout_movie_similar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/sixteen_dp_dimen" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

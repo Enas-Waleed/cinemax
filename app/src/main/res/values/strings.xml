@@ -13,4 +13,6 @@
     <string name="site">Site : </string>
     <string name="quality">Quality : </string>
     <string name="similar_movies">Similar Movies</string>
+    <string name="rating_value">4.5</string>
+    <string name="movie_time">1h 58 min</string>
 </resources>

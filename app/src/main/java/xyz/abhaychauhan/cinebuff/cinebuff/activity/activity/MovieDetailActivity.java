@@ -284,12 +284,21 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
     @Override
     public void onTrailerClick(View view, int position) {
-        showSnackbarMessage(trailerList.get(position).getName());
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(String.format(TmdbUrl.YOUTUBE_VIDEO_URL,
+                trailerList.get(position).getKey())));
+        if(intent.resolveActivity(getPackageManager()) != null){
+            startActivity(intent);
+        }
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        showSnackbarMessage(similarMovieList.get(position).getTitle());
+        Movie movie = similarMovieList.get(position);
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra("movieId", Integer.toString(movie.getId()));
+        intent.putExtra("movieTitle", movie.getTitle());
+        startActivity(intent);
     }
 
     /**
