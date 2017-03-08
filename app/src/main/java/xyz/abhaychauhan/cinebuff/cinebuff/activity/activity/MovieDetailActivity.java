@@ -28,8 +28,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.LeadCastAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.SimilarMovieAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.TrailerAdapter;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.LeadCast;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.Movie;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.MovieDetail;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.Trailer;
@@ -38,7 +40,8 @@ import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
 public class MovieDetailActivity extends AppCompatActivity implements
-        TrailerAdapter.TrailerClickListener, SimilarMovieAdapter.SimilarMovieItemClickListener {
+        TrailerAdapter.TrailerClickListener, SimilarMovieAdapter.SimilarMovieItemClickListener,
+        LeadCastAdapter.LeadCastClickListener {
 
     private static final String TAG = MovieDetailActivity.class.getSimpleName();
 
@@ -87,14 +90,20 @@ public class MovieDetailActivity extends AppCompatActivity implements
     @BindView(R.id.similar_movie_rv)
     RecyclerView similarMovieRv;
 
+     @BindView(R.id.lead_cast_rv)
+     RecyclerView leadCastRv;
+
     private LinearLayoutManager trailerLayoutManager;
     private LinearLayoutManager similarMovieLayoutManager;
+    private LinearLayoutManager leadCastLayoutManager;
 
     private TrailerAdapter trailerAdapter;
     private SimilarMovieAdapter similarMovieAdapter;
+    private LeadCastAdapter leadCastAdapter;
 
     private List<Trailer> trailerList;
     private ArrayList<Movie> similarMovieList;
+    private ArrayList<LeadCast> leadCastLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,10 +124,13 @@ public class MovieDetailActivity extends AppCompatActivity implements
         String movieUrl = generateUrl(movieId);
         String movieTrailerUrl = generateMovieTrailerUrl(movieId);
         String similarMoviesUrl = generateSimilarMoviesUrl(movieId);
-        performJsonNetworkRequest(movieUrl, movieTrailerUrl, similarMoviesUrl);
+        String leadCastUrl = generateMovieCastUrl(movieId);
+        performJsonNetworkRequest(movieUrl, movieTrailerUrl, similarMoviesUrl,
+                leadCastUrl);
 
         setupTrailerRecyclerView();
         setupSimilarMovieRecyclerView();
+        setupLeadCastRecyclerView();
     }
 
     /**
@@ -160,12 +172,25 @@ public class MovieDetailActivity extends AppCompatActivity implements
     }
 
     /**
+     * This function return the movie cast url
+     *
+     * @param movieId String containing the unique movie id
+     * @return Api url for the movie cast
+     */
+    private String generateMovieCastUrl(String movieId) {
+        Uri builtUri = Uri.parse(String.format(TmdbUrl.MOVIE_CAST_URL, movieId)).buildUpon()
+                .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
+                .build();
+        return builtUri.toString();
+    }
+
+    /**
      * This function return the movie trailers url
      *
      * @param movieId String containing the unique movie id
      * @return Api url for the movie trailer
      */
-    private String generateMovieTrailerUrl(String movieId){
+    private String generateMovieTrailerUrl(String movieId) {
         Uri builtUri = Uri.parse(String.format(TmdbUrl.MOVIE_TRAILER_URL, movieId)).buildUpon()
                 .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
                 .build();
@@ -179,7 +204,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
      * @param movieId String containing the unique movie id
      * @return Api url for the similar movie
      */
-    private String generateSimilarMoviesUrl(String movieId){
+    private String generateSimilarMoviesUrl(String movieId) {
         Uri builtUri = Uri.parse(String.format(TmdbUrl.MOVIE_SIMILAR_URL, movieId)).buildUpon()
                 .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
                 .build();
@@ -239,14 +264,38 @@ public class MovieDetailActivity extends AppCompatActivity implements
     }
 
     /**
+     * This function return the lead cast list
+     *
+     * @param data Contains the json data of the lead cast
+     * @return list of lead cast
+     */
+    private ArrayList<LeadCast> getLeadCastList(JSONObject data) {
+        ArrayList<LeadCast> leadCastList = new ArrayList<>();
+        JSONArray cast = data.optJSONArray("cast");
+        for (int index = 0; index < cast.length(); index++) {
+            JSONObject object = cast.optJSONObject(index);
+            String characterName = object.optString("character");
+            String creditId = object.optString("credit_id");
+            int id = object.optInt("id");
+            String name = object.optString("name");
+            String profilePath = object.optString("profile_path");
+
+            LeadCast leadCast = new LeadCast(characterName, creditId, id, name, profilePath);
+            leadCastList.add(leadCast);
+        }
+        return leadCastList;
+    }
+
+    /**
      * This function return the similar movie list
+     *
      * @param data Contains the json data of the similar movies
      * @return list of similar movies
      */
-    private ArrayList<Movie> getSimilarMovieList(JSONObject data){
+    private ArrayList<Movie> getSimilarMovieList(JSONObject data) {
         ArrayList<Movie> similarMovieList = new ArrayList<>();
         JSONArray results = data.optJSONArray("results");
-        for(int index=0;index<results.length();index++){
+        for (int index = 0; index < results.length(); index++) {
             JSONObject object = results.optJSONObject(index);
             int id = object.optInt("id");
             String title = object.optString("original_title");
@@ -266,10 +315,10 @@ public class MovieDetailActivity extends AppCompatActivity implements
      * @param data Contains the json data of movie trailer
      * @return list of Trailers object
      */
-    private ArrayList<Trailer> getTrailerList(JSONObject data){
+    private ArrayList<Trailer> getTrailerList(JSONObject data) {
         ArrayList<Trailer> trailers = new ArrayList<>();
         JSONArray results = data.optJSONArray("results");
-        for(int index = 0; index < results.length(); index++){
+        for (int index = 0; index < results.length(); index++) {
             JSONObject object = results.optJSONObject(index);
             String id = object.optString("id");
             String key = object.optString("key");
@@ -283,13 +332,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onTrailerClick(View view, int position) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(String.format(TmdbUrl.YOUTUBE_VIDEO_URL,
-                trailerList.get(position).getKey())));
-        if(intent.resolveActivity(getPackageManager()) != null){
-            startActivity(intent);
-        }
+    public void onLeadCastClick(View view, int position) {
+        showSnackbarMessage(leadCastLists.get(position).getName());
     }
 
     @Override
@@ -301,24 +345,34 @@ public class MovieDetailActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    @Override
+    public void onTrailerClick(View view, int position) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(String.format(TmdbUrl.YOUTUBE_VIDEO_URL,
+                trailerList.get(position).getKey())));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
     /**
      * This function performs network request on the api url and
      * pass the response as a parameter to getMovieData() function
      *
-     * @param movieUrl movie url
+     * @param movieUrl        movie url
      * @param movieTrailerUrl movie trailer url
      */
     private void performJsonNetworkRequest(String movieUrl, String movieTrailerUrl,
-                                           String similarMoviesUrl) {
+                                           String similarMoviesUrl, String movieCastUrl) {
         // Request for movie data
         JsonObjectRequest movieRequest = new JsonObjectRequest(Request.Method.GET, movieUrl,
                 null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        MovieDetail movie = getMovieData(response);
-                        displayData(movie);
-                    }
-                }, new Response.ErrorListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                MovieDetail movie = getMovieData(response);
+                displayData(movie);
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 showSnackbarMessage("Not able to fetch the data!!!");
@@ -359,6 +413,22 @@ public class MovieDetailActivity extends AppCompatActivity implements
             }
         });
         NetworkController.getInstance(this).addToRequestQueue(similarMovieRequest);
+
+        // Request for movie cast data
+        JsonObjectRequest leadCastRequest = new JsonObjectRequest(Request.Method.GET,
+                movieCastUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                leadCastLists.addAll(getLeadCastList(response));
+                leadCastAdapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showSnackbarMessage("Not able to lead movie cast data !!");
+            }
+        });
+        NetworkController.getInstance(this).addToRequestQueue(leadCastRequest);
     }
 
     /**
@@ -367,17 +437,30 @@ public class MovieDetailActivity extends AppCompatActivity implements
      *
      * @param title Title of the movie
      */
-    private void setupToolbar(String title){
+    private void setupToolbar(String title) {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(title);
     }
 
     /**
+     * This function setup the lead cast recycler view, initialize lead cast list,
+     * set layout manager for lead cast recycler view
+     */
+    private void setupLeadCastRecyclerView(){
+        leadCastLists = new ArrayList<>();
+        leadCastLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
+                false);
+        leadCastAdapter = new LeadCastAdapter(this, leadCastLists, this);
+        leadCastRv.setLayoutManager(leadCastLayoutManager);
+        leadCastRv.setAdapter(leadCastAdapter);
+    }
+
+    /**
      * This function setup the trailer recycler view, initialize trailers array list,
      * set layout manager for trailer recycler view
      */
-    private void setupTrailerRecyclerView(){
+    private void setupTrailerRecyclerView() {
         trailerList = new ArrayList<>();
 
         trailerLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
@@ -392,7 +475,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
      * This function setup the similar movie recycler view, initialize similar movie list,
      * set layout manager for similar movie recycler view
      */
-    private void setupSimilarMovieRecyclerView(){
+    private void setupSimilarMovieRecyclerView() {
         similarMovieList = new ArrayList<>();
 
         similarMovieLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,

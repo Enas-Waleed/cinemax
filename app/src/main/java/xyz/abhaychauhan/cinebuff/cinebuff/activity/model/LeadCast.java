@@ -22,23 +22,23 @@ public class LeadCast {
     }
 
     public String getCharacterName(){
-        return characterName;
+        return this.characterName;
     }
 
     public String getCreditId(){
-        return creditId;
+        return this.creditId;
     }
 
     public int getId(){
-        return id;
+        return this.id;
     }
 
     public String getName(){
-        return name;
+        return this.name;
     }
 
     public String getProfilePath(){
-        return profilePath;
+        return this.profilePath;
     }
 
 }

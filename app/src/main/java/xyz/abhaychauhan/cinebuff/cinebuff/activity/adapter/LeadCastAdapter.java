@@ -59,7 +59,7 @@ public class LeadCastAdapter extends RecyclerView.Adapter<LeadCastAdapter.LeadCa
 
     @Override
     public LeadCastViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_lead_cast,
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.card_lead_cast,
                 parent, false);
         return new LeadCastViewHolder(view);
     }
@@ -67,8 +67,7 @@ public class LeadCastAdapter extends RecyclerView.Adapter<LeadCastAdapter.LeadCa
     @Override
     public void onBindViewHolder(LeadCastViewHolder holder, int position) {
         LeadCast leadCast = leadCastList.get(position);
-        Picasso.with(getContext()).load(TmdbUrl.IMAGE_BASE_URL + leadCast.getProfilePath())
-                .into(holder.actorIv);
+        Picasso.with(getContext()).load(TmdbUrl.IMAGE_BASE_URL + leadCast.getProfilePath()).into(holder.actorIv);
         holder.actorName.setText(leadCast.getName());
     }
 
@@ -78,7 +77,7 @@ public class LeadCastAdapter extends RecyclerView.Adapter<LeadCastAdapter.LeadCa
     }
 
     private Context getContext(){
-        return context;
+        return this.context;
     }
 
 }

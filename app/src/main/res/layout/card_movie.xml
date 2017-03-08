@@ -10,7 +10,7 @@
     android:layout_marginRight="4dp"
     android:layout_marginTop="@dimen/eight_dp_dimen"
     android:layout_marginBottom="@dimen/eight_dp_dimen"
-    card_view:cardCornerRadius="@dimen/two_dp_dimen">
+    card_view:cardCornerRadius="@dimen/four_dp_dimen">
 
     <RelativeLayout
         android:layout_width="match_parent"
