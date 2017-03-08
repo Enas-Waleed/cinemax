@@ -7,4 +7,5 @@ package xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter;
 public class LeadCastAdapter {
 
 
+
 }
