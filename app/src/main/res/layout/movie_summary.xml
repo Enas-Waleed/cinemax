@@ -189,6 +189,11 @@
             android:layout_height="wrap_content" />
 
         <include
+            layout="@layout/layout_movie_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <include
             layout="@layout/layout_lead_cast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

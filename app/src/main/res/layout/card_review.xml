@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:elevation="@dimen/eight_dp_dimen"
+    android:layout_margin="@dimen/ten_dp_dimen">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/ten_dp_dimen">
 
+        <TextView
+            android:id="@+id/reviewer_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            tools:text="@string/reviewer_name" />
 
+        <TextView
+            android:id="@+id/reviewer_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reviewer_name"
+            android:ellipsize="end"
+            android:layout_marginTop="@dimen/six_dp_dimen"
+            android:lineSpacingExtra="4dp"
+            android:maxLines="4"
+            android:textColor="@color/grey_600"
+            android:textSize="14sp"
+            tools:text="@string/reviewer_review" />
 
     </RelativeLayout>
 

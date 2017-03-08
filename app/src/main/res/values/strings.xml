@@ -17,4 +17,7 @@
     <string name="movie_time">1h 58 min</string>
     <string name="lead_cast">Lead Cast</string>
     <string name="actor_name">Jamie Dornan</string>
+    <string name="reviewer_name">Ganesan</string>
+    <string name="reviewer_review">I\'ve never been a fan of this series. The only impressive thing of the original was the graphics that were, at the time, breathtaking. But we all know great graphics alone can\'t save a film. \r\nI watched this new effort just to see how far CGI has come in the time since the original and I can safely say, not very far. From the opening scene with the terrible looking and poorly animated bird, it\'s obvious that CGI has reached its limits in recreating realistic content. \r\nAs for the film. The dreadful script and annoying characters helped me lose any interest after about 15 mins. Ok for the age range it's aimed at I suppose, but there are far better films out there worthy of your money.</string>
+    <string name="reviews">Reviews</string>
 </resources>
