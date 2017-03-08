@@ -12,6 +12,7 @@ public class TmdbUrl {
     public static final String MOVIE_TRAILER_URL = TMDB_BASE_URL + "%s" + "/videos";
     public static final String MOVIE_SIMILAR_URL = TMDB_BASE_URL + "%s" + "/similar";
     public static final String MOVIE_CAST_URL = TMDB_BASE_URL + "%s" + "/credits";
+    public static final String MOVIE_REVIEW_URL = TMDB_BASE_URL + "%s" + "/reviews";
 
     public static final String API_KEY_PARAM = "api_key";
     public static final String PAGE_PARAM = "page";
