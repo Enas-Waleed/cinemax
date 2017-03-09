@@ -29,11 +29,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.LeadCastAdapter;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.ReviewAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.SimilarMovieAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.TrailerAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.LeadCast;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.Movie;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.MovieDetail;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.Review;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.Trailer;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.CommonUtils;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
@@ -41,7 +43,7 @@ import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
 public class MovieDetailActivity extends AppCompatActivity implements
         TrailerAdapter.TrailerClickListener, SimilarMovieAdapter.SimilarMovieItemClickListener,
-        LeadCastAdapter.LeadCastClickListener {
+        LeadCastAdapter.LeadCastClickListener, ReviewAdapter.ReviewClickListener {
 
     private static final String TAG = MovieDetailActivity.class.getSimpleName();
 
@@ -90,20 +92,26 @@ public class MovieDetailActivity extends AppCompatActivity implements
     @BindView(R.id.similar_movie_rv)
     RecyclerView similarMovieRv;
 
-     @BindView(R.id.lead_cast_rv)
-     RecyclerView leadCastRv;
+    @BindView(R.id.lead_cast_rv)
+    RecyclerView leadCastRv;
+
+    @BindView(R.id.movie_reviews_rv)
+    RecyclerView reviewRv;
 
     private LinearLayoutManager trailerLayoutManager;
     private LinearLayoutManager similarMovieLayoutManager;
     private LinearLayoutManager leadCastLayoutManager;
+    private LinearLayoutManager reviewLayoutManager;
 
     private TrailerAdapter trailerAdapter;
     private SimilarMovieAdapter similarMovieAdapter;
     private LeadCastAdapter leadCastAdapter;
+    private ReviewAdapter reviewAdapter;
 
     private List<Trailer> trailerList;
     private ArrayList<Movie> similarMovieList;
     private ArrayList<LeadCast> leadCastLists;
+    private ArrayList<Review> reviewList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,12 +133,15 @@ public class MovieDetailActivity extends AppCompatActivity implements
         String movieTrailerUrl = generateMovieTrailerUrl(movieId);
         String similarMoviesUrl = generateSimilarMoviesUrl(movieId);
         String leadCastUrl = generateMovieCastUrl(movieId);
+        String reviewUrl = generateReviewUrl(movieId);
+
         performJsonNetworkRequest(movieUrl, movieTrailerUrl, similarMoviesUrl,
-                leadCastUrl);
+                leadCastUrl, reviewUrl);
 
         setupTrailerRecyclerView();
         setupSimilarMovieRecyclerView();
         setupLeadCastRecyclerView();
+        setupReviewRecyclerView();
     }
 
     /**
@@ -192,6 +203,19 @@ public class MovieDetailActivity extends AppCompatActivity implements
      */
     private String generateMovieTrailerUrl(String movieId) {
         Uri builtUri = Uri.parse(String.format(TmdbUrl.MOVIE_TRAILER_URL, movieId)).buildUpon()
+                .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
+                .build();
+        return builtUri.toString();
+    }
+
+    /**
+     * This function return the movie review url
+     *
+     * @param movieId String containing the unique movie id
+     * @return Api url for the movie review
+     */
+    private String generateReviewUrl(String movieId){
+        Uri builtUri = Uri.parse(String.format(TmdbUrl.MOVIE_REVIEW_URL, movieId)).buildUpon()
                 .appendQueryParameter(TmdbUrl.API_KEY_PARAM, TmdbUrl.API_KEY)
                 .build();
         return builtUri.toString();
@@ -287,6 +311,27 @@ public class MovieDetailActivity extends AppCompatActivity implements
     }
 
     /**
+     * This function return the movie review list
+     *
+     * @param data Contains the json data of the review
+     * @return list of movie review
+     */
+    private ArrayList<Review> getReviewList(JSONObject data){
+        ArrayList<Review> reviewLists = new ArrayList<>();
+        JSONArray results = data.optJSONArray("results");
+        for(int index=0; index<results.length(); index++){
+            JSONObject object = results.optJSONObject(index);
+            String id = object.optString("id");
+            String author = object.optString("author");
+            String content = object.optString("content");
+            String url = object.optString("url");
+            Review review = new Review(id, author, content, url);
+            reviewLists.add(review);
+        }
+        return reviewLists;
+    }
+
+    /**
      * This function return the similar movie list
      *
      * @param data Contains the json data of the similar movies
@@ -337,6 +382,12 @@ public class MovieDetailActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onReviewClickListener(View view, int position) {
+        showSnackbarMessage(reviewList.get(position).getAuthor());
+        // TODO : Change body
+    }
+
+    @Override
     public void onSimilarMovieItemClick(View view, int position) {
         Movie movie = similarMovieList.get(position);
         Intent intent = new Intent(this, MovieDetailActivity.class);
@@ -363,7 +414,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
      * @param movieTrailerUrl movie trailer url
      */
     private void performJsonNetworkRequest(String movieUrl, String movieTrailerUrl,
-                                           String similarMoviesUrl, String movieCastUrl) {
+                                           String similarMoviesUrl, String movieCastUrl,
+                                           String reviewUrl) {
         // Request for movie data
         JsonObjectRequest movieRequest = new JsonObjectRequest(Request.Method.GET, movieUrl,
                 null, new Response.Listener<JSONObject>() {
@@ -429,6 +481,22 @@ public class MovieDetailActivity extends AppCompatActivity implements
             }
         });
         NetworkController.getInstance(this).addToRequestQueue(leadCastRequest);
+
+        // Request for movie review data
+        JsonObjectRequest reviewRequest = new JsonObjectRequest(Request.Method.GET,
+                reviewUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                reviewList.addAll(getReviewList(response));
+                reviewAdapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showSnackbarMessage("Not able to load review data !!");
+            }
+        });
+        NetworkController.getInstance(this).addToRequestQueue(reviewRequest);
     }
 
     /**
@@ -469,6 +537,20 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
         trailerRv.setLayoutManager(trailerLayoutManager);
         trailerRv.setAdapter(trailerAdapter);
+    }
+
+    /**
+     * This function setup the review recycler view, initialize review array lis,
+     * set layout manager for review recycler view
+     */
+    private void setupReviewRecyclerView(){
+        reviewList = new ArrayList<>();
+
+        reviewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        reviewAdapter = new ReviewAdapter(this, reviewList, this);
+
+        reviewRv.setLayoutManager(reviewLayoutManager);
+        reviewRv.setAdapter(reviewAdapter);
     }
 
     /**

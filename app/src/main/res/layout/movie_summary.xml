@@ -193,6 +193,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/grey_400"/>
+
         <include
             layout="@layout/layout_lead_cast"
             android:layout_width="match_parent"
