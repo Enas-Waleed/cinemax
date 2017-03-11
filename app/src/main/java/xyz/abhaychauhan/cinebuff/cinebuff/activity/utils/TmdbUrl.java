@@ -17,8 +17,9 @@ public class TmdbUrl {
     public static final String API_KEY_PARAM = "api_key";
     public static final String PAGE_PARAM = "page";
     public static final String LANGUAGE_PARAM = "language";
-    // TODO (1) Place api key here
-    public static final String API_KEY = "661beb6fe6cbb63c894b5a47c9275675";
+
+    // TODO : Place your API key here
+    public static final String API_KEY = "YOUR_API_KEY_HERE";
     public static final String LANGUAGE = "en-US";
 
     public static final String YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%s";
