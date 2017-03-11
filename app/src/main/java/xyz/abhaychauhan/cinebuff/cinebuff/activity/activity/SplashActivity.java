@@ -10,7 +10,7 @@ import xyz.abhaychauhan.cinebuff.cinebuff.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final int SPLASH_DISPLAY_LENGTH = 3600;
+    private final int SPLASH_DISPLAY_LENGTH = 2600;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

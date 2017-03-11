@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -98,6 +99,21 @@ public class MovieDetailActivity extends AppCompatActivity implements
     @BindView(R.id.movie_reviews_rv)
     RecyclerView reviewRv;
 
+    @BindView(R.id.layout_movie_trailer)
+    LinearLayout movieTrailerLayout;
+
+    @BindView(R.id.layout_movie_review)
+    LinearLayout movieReviewLayout;
+
+    @BindView(R.id.layout_lead_cast)
+    LinearLayout movieCastLayout;
+
+    @BindView(R.id.layout_movie_similar)
+    LinearLayout movieSimilarLayout;
+
+    @BindView(R.id.share_layout)
+    LinearLayout shareLayout;
+
     private LinearLayoutManager trailerLayoutManager;
     private LinearLayoutManager similarMovieLayoutManager;
     private LinearLayoutManager leadCastLayoutManager;
@@ -142,6 +158,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
         setupSimilarMovieRecyclerView();
         setupLeadCastRecyclerView();
         setupReviewRecyclerView();
+
     }
 
     /**
@@ -423,6 +440,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
             public void onResponse(JSONObject response) {
                 MovieDetail movie = getMovieData(response);
                 displayData(movie);
+                setupShare(movie);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -439,6 +457,9 @@ public class MovieDetailActivity extends AppCompatActivity implements
             public void onResponse(JSONObject response) {
                 trailerList.clear();
                 trailerList.addAll(getTrailerList(response));
+                if(trailerList.size() > 0){
+                    movieTrailerLayout.setVisibility(View.VISIBLE);
+                }
                 trailerAdapter.notifyDataSetChanged();
 
             }
@@ -455,7 +476,11 @@ public class MovieDetailActivity extends AppCompatActivity implements
                 similarMoviesUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                similarMovieList.clear();
                 similarMovieList.addAll(getSimilarMovieList(response));
+                if(similarMovieList.size() > 0){
+                    movieSimilarLayout.setVisibility(View.VISIBLE);
+                }
                 similarMovieAdapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
@@ -471,7 +496,11 @@ public class MovieDetailActivity extends AppCompatActivity implements
                 movieCastUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                leadCastLists.clear();
                 leadCastLists.addAll(getLeadCastList(response));
+                if(leadCastLists.size() > 0){
+                    movieCastLayout.setVisibility(View.VISIBLE);
+                }
                 leadCastAdapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
@@ -487,7 +516,11 @@ public class MovieDetailActivity extends AppCompatActivity implements
                 reviewUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                reviewList.clear();
                 reviewList.addAll(getReviewList(response));
+                if(reviewList.size() > 0){
+                    movieReviewLayout.setVisibility(View.VISIBLE);
+                }
                 reviewAdapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
@@ -497,6 +530,27 @@ public class MovieDetailActivity extends AppCompatActivity implements
             }
         });
         NetworkController.getInstance(this).addToRequestQueue(reviewRequest);
+    }
+
+    /**
+     * This function setup share action button
+     *
+     * @param movie
+     */
+    private void setupShare(final MovieDetail movie){
+        shareLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                intent.setType("text/plain");
+                String message = movie.getTitle() + "\n" + movie.getSynopsis();
+                intent.putExtra(Intent.EXTRA_TEXT, message);
+                if(intent.resolveActivity(getPackageManager()) != null){
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     /**
