@@ -8,7 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,7 +109,7 @@ public class PopularMovieFragment extends Fragment implements
         for (int i = 0; i < results.length(); i++) {
             JSONObject movieObject = results.optJSONObject(i);
             int id = movieObject.optInt("id");
-            String posterPath = movieObject.optString("poster_path");
+            String posterPath = movieObject.optString("backdrop_path");
             String overview = movieObject.optString("overview");
             String title = movieObject.optString("original_title");
             int voteCount = movieObject.optInt("vote_count");

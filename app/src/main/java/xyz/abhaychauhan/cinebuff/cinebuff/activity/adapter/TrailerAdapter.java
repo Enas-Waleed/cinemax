@@ -40,15 +40,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     public class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView trailerIv;
         public TextView nameTv;
-        public TextView siteTv;
-        public TextView sizeTv;
 
         public TrailerViewHolder (View view){
             super(view);
             trailerIv = (ImageView) view.findViewById(R.id.trailer_iv);
             nameTv = (TextView) view.findViewById(R.id.trailer_name);
-            siteTv = (TextView) view.findViewById(R.id.trailer_site);
-            sizeTv = (TextView) view.findViewById(R.id.trailer_size);
 
             view.setOnClickListener(this);
         }
@@ -73,8 +69,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         Picasso.with(getContext()).load(String.format(TmdbUrl.YOUTUBE_THUMB_URL,
                 trailer.getKey())).into(holder.trailerIv);
         holder.nameTv.setText(trailer.getName());
-        holder.siteTv.setText(trailer.getSite());
-        holder.sizeTv.setText(trailer.getSize());
     }
 
     @Override
