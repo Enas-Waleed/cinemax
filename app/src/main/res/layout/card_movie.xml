@@ -2,8 +2,8 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="140dp"
-    android:layout_height="320dp"
+    android:layout_width="@dimen/one_fourty_dp_dimen"
+    android:layout_height="@dimen/three_twenty_dp_dimen"
     android:elevation="@dimen/eight_dp_dimen"
     android:orientation="vertical"
     android:layout_marginLeft="@dimen/four_dp_dimen"
@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/movie_poster_iv"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="@dimen/two_fourty_dp_dimen"
             android:scaleType="centerCrop"
             tools:src="@drawable/poster" />
 
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/sixteen_sp_dimen"
                 android:textStyle="normal"
                 tools:text="Fifty Shades Darker"
                 android:layout_alignParentTop="true"/>
@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/two_dp_dimen"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/twelve_sp_dimen"
                     tools:text="@string/rating_value" />
 
                 <ImageView

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="320dp"
-    android:layout_height="200dp"
+    android:layout_width="@dimen/three_twenty_dp_dimen"
+    android:layout_height="@dimen/two_hundred_dp_dimen"
     android:layout_marginBottom="@dimen/four_dp_dimen"
     android:layout_marginLeft="@dimen/eight_dp_dimen"
     android:layout_marginRight="@dimen/eight_dp_dimen"
@@ -32,7 +32,7 @@
             android:foreground="@drawable/ic_play_circle"
             android:foregroundGravity="center"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="@dimen/ten_dp_dimen">
 
             <TextView
                 android:id="@+id/trailer_name"
@@ -42,7 +42,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="2"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/sixteen_sp_dimen"
                 tools:text="@string/trailer_name" />
 
         </RelativeLayout>

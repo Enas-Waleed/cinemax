@@ -12,7 +12,7 @@
         android:fontFamily="sans-serif-medium"
         android:text="@string/lead_cast"
         android:textColor="@android:color/black"
-        android:textSize="16sp" />
+        android:textSize="@dimen/sixteen_sp_dimen" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lead_cast_rv"

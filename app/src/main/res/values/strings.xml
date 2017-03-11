@@ -21,4 +21,6 @@
     <string name="reviewer_review">Movie was quite awesome</string>
     <string name="reviews">Reviews</string>
     <string name="share">Share</string>
+    <string name="vote_average_value">9.1 / 10</string>
+    <string name="vote_count_value">21976 votes</string>
 </resources>

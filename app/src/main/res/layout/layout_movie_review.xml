@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/sixteen_dp_dimen">
+    android:padding="@dimen/sixteen_dp_dimen"
+    android:background="@color/grey_300">
 
     <TextView
         android:layout_width="wrap_content"
@@ -12,7 +13,7 @@
         android:fontFamily="sans-serif-medium"
         android:text="@string/reviews"
         android:textColor="@android:color/black"
-        android:textSize="16sp" />
+        android:textSize="@dimen/sixteen_sp_dimen" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/movie_reviews_rv"

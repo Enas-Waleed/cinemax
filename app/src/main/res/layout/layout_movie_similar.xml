@@ -13,7 +13,7 @@
         android:fontFamily="sans-serif-medium"
         android:text="@string/similar_movies"
         android:textColor="@android:color/black"
-        android:textSize="16sp" />
+        android:textSize="@dimen/sixteen_sp_dimen" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/similar_movie_rv"

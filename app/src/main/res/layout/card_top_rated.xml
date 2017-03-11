@@ -24,22 +24,22 @@
             <ImageView
                 android:id="@+id/movie_poster_iv"
                 android:layout_width="match_parent"
-                android:layout_height="176dp"
-                android:scaleType="centerCrop"
+                android:layout_height="@dimen/two_hundred_dp_dimen"
+                android:scaleType="fitXY"
                 tools:src="@drawable/movie_cover" />
 
             <TextView
                 android:id="@+id/movie_title_tv"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="@dimen/sixty_dp_dimen"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="2"
                 android:paddingLeft="@dimen/eight_dp_dimen"
                 android:paddingRight="@dimen/eight_dp_dimen"
-                android:textSize="12sp"
+                android:textSize="@dimen/twelve_sp_dimen"
                 android:textStyle="bold"
-                tools:text="Hello there" />
+                tools:text="@string/actor_name" />
 
         </LinearLayout>
 

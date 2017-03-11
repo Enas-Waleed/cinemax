@@ -18,6 +18,13 @@
 
     <dimen name="splash_logo_dimen">180dp</dimen>
 
+    <dimen name="three_twenty_dp_dimen">320dp</dimen>
+    <dimen name="two_fourty_dp_dimen">240dp</dimen>
+    <dimen name="two_hundred_dp_dimen">200dp</dimen>
+    <dimen name="one_eighty_dp_dimen">180dp</dimen>
+    <dimen name="one_fourty_dp_dimen">140dp</dimen>
+    <dimen name="sixty_dp_dimen">60dp</dimen>
+    <dimen name="twenty_four_dp_dimen">24dp</dimen>
     <dimen name="twenty_dp_dimen">20dp</dimen>
     <dimen name="sixteen_dp_dimen">16dp</dimen>
     <dimen name="ten_dp_dimen">10dp</dimen>
@@ -26,5 +33,14 @@
     <dimen name="four_dp_dimen">4dp</dimen>
     <dimen name="two_dp_dimen">2dp</dimen>
     <dimen name="one_dp_dimen">1dp</dimen>
+
+    <dimen name="eighteen_sp_dimen">18sp</dimen>
+    <dimen name="sixteen_sp_dimen">16sp</dimen>
+    <dimen name="fourteen_sp_dimen">14sp</dimen>
+    <dimen name="twelve_sp_dimen">12sp</dimen>
+
+    <dimen name="app_bar_dimen">220dp</dimen>
+    <dimen name="splash_title_dimen">28sp</dimen>
+    <dimen name="lead_cast_horizontal_dimen">140dp</dimen>
 
 </resources>
