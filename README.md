@@ -6,12 +6,12 @@ Place your API key API_KEY variable in TmdbUrl.java file.
 
 ## Screenshots
 
-<img src="docs/screenshots/image1.jpg" width="200" style="padding:10px;"/>
-<img src="docs/screenshots/image2.jpg" width="200" style="padding:10px;"/>
-<img src="docs/screenshots/image3.png" width="200" style="padding:10px;"/>
-<img src="docs/screenshots/image4.png" width="200" style="padding:10px;"/>
-<img src="docs/screenshots/image5.png" width="200" style="padding:10px;"/>
-<img src="docs/screenshots/image6.png" width="200" style="padding:10px;"/>
+<img src="docs/screenshots/image1.jpg" width="400" style="padding:10px;"/>
+<img src="docs/screenshots/image2.jpg" width="400" style="padding:10px;"/>
+<img src="docs/screenshots/image3.png" width="400" style="padding:10px;"/>
+<img src="docs/screenshots/image4.png" width="400" style="padding:10px;"/>
+<img src="docs/screenshots/image5.png" width="400" style="padding:10px;"/>
+<img src="docs/screenshots/image6.png" width="400" style="padding:10px;"/>
 
 ## Devices tested on
 | Device     | Android Version   | Skin/ROM |
