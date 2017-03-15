@@ -411,6 +411,12 @@ public class MovieDetailActivity extends AppCompatActivity implements
         intent.putExtra("movieId", Integer.toString(movie.getId()));
         intent.putExtra("movieTitle", movie.getTitle());
         startActivity(intent);
+
+//        View sharedView = findViewById(R.id.movie_poster_iv);
+//        String transitionName = getString(R.string.shared_poster);
+//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+//                sharedView, transitionName);
+//        ActivityCompat.startActivity(this, intent, options.toBundle());
     }
 
     @Override

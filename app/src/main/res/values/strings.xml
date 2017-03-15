@@ -23,4 +23,5 @@
     <string name="share">Share</string>
     <string name="vote_average_value">9.1 / 10</string>
     <string name="vote_count_value">21976 votes</string>
+    <string name="shared_poster">shared_poster</string>
 </resources>
