@@ -94,22 +94,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@android:color/black"
-                tools:text="@string/movie_title" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/overview_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ten_dp_dimen"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    tools:text="@string/movie_overview" />
-
-            </FrameLayout>
+                tools:text="@string/movie_title"
+                android:textSize="@dimen/sixteen_sp_dimen"/>
 
         </LinearLayout>
 

@@ -38,7 +38,6 @@ public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapte
 
         public ImageView coverPosterImageView;
         public TextView titleTextView;
-        public TextView overviewTextView;
         public TextView votesTextView;
         public TextView voteAverageTextView;
 
@@ -46,7 +45,6 @@ public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapte
             super(itemView);
             coverPosterImageView = (ImageView) itemView.findViewById(R.id.movie_cover_iv);
             titleTextView = (TextView) itemView.findViewById(R.id.title_tv);
-            overviewTextView = (TextView) itemView.findViewById(R.id.overview_tv);
             votesTextView = (TextView) itemView.findViewById(R.id.votes_count_tv);
             voteAverageTextView = (TextView) itemView.findViewById(R.id.votes_average_tv);
 
@@ -76,7 +74,6 @@ public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapte
         holder.votesTextView.setText(movie.getVotesCount() + " votes");
         holder.voteAverageTextView.setText(movie.getVoteAverage() + "/10");
         holder.titleTextView.setText(movie.getTitle());
-        holder.overviewTextView.setText(movie.getOverview());
     }
 
     @Override
