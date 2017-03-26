@@ -1,5 +1,6 @@
 package xyz.abhaychauhan.cinebuff.cinebuff.activity.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -7,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements
         viewpager.setAdapter(adapter);
     }
 
-    private void setupNavigationDrawer(){
+    private void setupNavigationDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
@@ -69,7 +71,30 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        Intent intent = null;
+        switch (itemId) {
+            case R.id.action_movies:
+                break;
+            case R.id.action_tv_shows:
+                intent = new Intent(this, TvShowActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_feedback:
+                break;
+            case R.id.action_settings:
+                break;
+        }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

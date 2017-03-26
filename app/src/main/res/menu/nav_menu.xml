@@ -4,9 +4,11 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
+                    android:id="@+id/action_movies"
                     android:icon="@drawable/ic_movie_gray"
                     android:title="@string/movies" />
                 <item
+                    android:id="@+id/action_tv_shows"
                     android:icon="@drawable/ic_tv_gray"
                     android:title="@string/tv_shows" />
             </group>
@@ -17,9 +19,11 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
+                    android:id="@+id/action_feedback"
                     android:icon="@drawable/ic_info_feedback_gray"
                     android:title="@string/info_and_feedback" />
                 <item
+                    android:id="@+id/action_settings"
                     android:icon="@drawable/ic_setting_gray"
                     android:title="@string/settings" />
             </group>
