@@ -1,13 +1,18 @@
 package xyz.abhaychauhan.cinebuff.cinebuff.activity.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +23,8 @@ import xyz.abhaychauhan.cinebuff.cinebuff.R;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.fragment.PopularMovieFragment;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.fragment.TopRatedMovieFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = MainActivity.class.getName();
 
@@ -28,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+    @BindView(R.id.navigation_view)
+    NavigationView navigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         setupViewPager(viewPager);
-
+        setupNavigationDrawer();
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -46,6 +56,20 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new PopularMovieFragment(), "Most Popular");
         adapter.addFragment(new TopRatedMovieFragment(), "Top Rated");
         viewpager.setAdapter(adapter);
+    }
+
+    private void setupNavigationDrawer(){
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

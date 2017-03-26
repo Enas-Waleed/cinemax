@@ -24,4 +24,12 @@
     <string name="vote_average_value">9.1 / 10</string>
     <string name="vote_count_value">21976 votes</string>
     <string name="shared_poster">shared_poster</string>
+    <string name="browse">Browse</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="other">Other</string>
+    <string name="settings">Settings</string>
+    <string name="info_and_feedback">Info and feedback</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
