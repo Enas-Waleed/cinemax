@@ -30,6 +30,7 @@
     <dimen name="ten_dp_dimen">10dp</dimen>
     <dimen name="eight_dp_dimen">8dp</dimen>
     <dimen name="six_dp_dimen">6dp</dimen>
+    <dimen name="five_dp_dimen">5dp</dimen>
     <dimen name="four_dp_dimen">4dp</dimen>
     <dimen name="two_dp_dimen">2dp</dimen>
     <dimen name="one_dp_dimen">1dp</dimen>

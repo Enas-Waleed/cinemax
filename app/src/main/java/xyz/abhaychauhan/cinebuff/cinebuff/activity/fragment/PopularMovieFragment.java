@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class PopularMovieFragment extends Fragment implements
     private static final String TAG = PopularMovieFragment.class.getSimpleName();
 
     private RecyclerView recyclerView;
-    private LinearLayoutManager layoutManager;
+    private GridLayoutManager layoutManager;
     private PopularMovieAdapter adapter;
     private ArrayList<Movie> movieList;
 
@@ -57,8 +58,12 @@ public class PopularMovieFragment extends Fragment implements
 
         movieList = new ArrayList<>();
 
+        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+        float width = displayMetrics.widthPixels / displayMetrics.density;
+        int spanCount = (int) (width/250.00);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.popular_movie_rv);
-        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new GridLayoutManager(getActivity(), spanCount);
+
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PopularMovieAdapter(getActivity(), movieList, this);
 

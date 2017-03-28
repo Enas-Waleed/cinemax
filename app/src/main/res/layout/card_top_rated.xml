@@ -1,48 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/four_dp_dimen">
+    android:layout_margin="@dimen/five_dp_dimen"
+    app:cardCornerRadius="@dimen/two_dp_dimen">
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/two_dp_dimen"
-        android:layout_marginLeft="@dimen/one_dp_dimen"
-        android:layout_marginRight="@dimen/one_dp_dimen"
-        android:layout_marginTop="@dimen/two_dp_dimen"
-        app:cardCornerRadius="@dimen/two_dp_dimen">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/movie_poster_iv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="@dimen/two_hundred_dp_dimen"
+            android:scaleType="fitXY"
+            tools:src="@drawable/movie_cover" />
 
-            <ImageView
-                android:id="@+id/movie_poster_iv"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/two_hundred_dp_dimen"
-                android:scaleType="fitXY"
-                tools:src="@drawable/movie_cover" />
+        <TextView
+            android:id="@+id/movie_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sixty_dp_dimen"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:paddingLeft="@dimen/eight_dp_dimen"
+            android:paddingRight="@dimen/eight_dp_dimen"
+            android:textSize="@dimen/twelve_sp_dimen"
+            android:textStyle="bold"
+            tools:text="@string/actor_name" />
 
-            <TextView
-                android:id="@+id/movie_title_tv"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/sixty_dp_dimen"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="2"
-                android:paddingLeft="@dimen/eight_dp_dimen"
-                android:paddingRight="@dimen/eight_dp_dimen"
-                android:textSize="@dimen/twelve_sp_dimen"
-                android:textStyle="bold"
-                tools:text="@string/actor_name" />
+    </LinearLayout>
 
-        </LinearLayout>
+</android.support.v7.widget.CardView>
 
-    </android.support.v7.widget.CardView>
-
-</FrameLayout>
