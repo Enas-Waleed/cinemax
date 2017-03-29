@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import xyz.abhaychauhan.cinebuff.cinebuff.R;
+
 /**
  * Created by abhay on 28/03/17.
  */
@@ -20,6 +22,9 @@ public class AirShowFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View rootView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_show_air,
+                container, false);
+
+        return rootView;
     }
 }

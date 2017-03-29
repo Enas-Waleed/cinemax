@@ -25,4 +25,9 @@ public class TmdbUrl {
     public static final String YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%s";
     public static final String YOUTUBE_THUMB_URL = "http://img.youtube.com/vi/%s/mqdefault.jpg";
 
+    public static final String TMDB_TV_BASE_URL = "https://api.themoviedb.org/3/tv/";
+    public static final String TV_POPULAR_URL = TMDB_TV_BASE_URL + "popular";
+    public static final String TV_LATEST_URL = TMDB_TV_BASE_URL + "latest";
+    public static final String TV_TOP_RATED_URL = TMDB_TV_BASE_URL + "top_rated";
+
 }

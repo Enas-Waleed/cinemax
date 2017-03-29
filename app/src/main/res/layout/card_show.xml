@@ -6,13 +6,14 @@
     android:layout_margin="@dimen/five_dp_dimen">
 
     <ImageView
-        android:id="@+id/show_poster"
+        android:id="@+id/tv_show_poster"
         android:layout_width="match_parent"
         android:layout_height="@dimen/two_hundred_dp_dimen"
         android:scaleType="centerCrop"
         tools:src="@drawable/movie_cover" />
 
     <TextView
+        android:id="@+id/tv_show_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
