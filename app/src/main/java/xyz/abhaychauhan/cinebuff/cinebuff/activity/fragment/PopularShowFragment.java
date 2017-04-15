@@ -3,6 +3,7 @@ package xyz.abhaychauhan.cinebuff.cinebuff.activity.fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import butterknife.ButterKnife;
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.TvShowAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.TvShow;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.Constants;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
@@ -43,6 +46,13 @@ public class PopularShowFragment extends Fragment implements
     private ArrayList<TvShow> tvShowList;
     private TvShowAdapter adapter;
 
+    private int pageCount = 1;
+    private int previousTotal = 0;
+    private boolean loading = true;
+    private int visibleThreshold = 4;
+    private int firstVisibleItem, visibleItemCount, totalItemCount;
+
+
     public PopularShowFragment() {
     }
 
@@ -58,11 +68,14 @@ public class PopularShowFragment extends Fragment implements
 
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         float width = displayMetrics.widthPixels / displayMetrics.density;
-        int spanCount = (int) (width / 250.00);
+        int spanCount = (int) (width / 140.00);
 
         layoutManager = new GridLayoutManager(getContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+
+        setupRecyclerView();
+
+        requestShowList(pageCount);
 
         return rootView;
     }
@@ -106,14 +119,64 @@ public class PopularShowFragment extends Fragment implements
     }
 
     /**
-     * This function
+     * This function fetch show list from response returned by the API and stores them
+     * in showList.
      */
     private void fetchShow(JSONObject response) {
-
+        JSONArray results = response.optJSONArray(Constants.RESULTS);
+        for (int index = 0; index < results.length(); index++) {
+            JSONObject show = results.optJSONObject(index);
+            String posterPath = show.optString(Constants.POSTER_PATH);
+            int id = show.optInt(Constants.ID);
+            String title = show.optString(Constants.ORIGINAL_NAME);
+            double voteAverage = show.optDouble(Constants.VOTE_AVERAGE);
+            String firstAirDate = show.optString(Constants.FIRST_AIR_DATE);
+            TvShow tvShow = new TvShow(id, posterPath, title, voteAverage, firstAirDate);
+            tvShowList.add(tvShow);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onShowClick(View view, int position) {
+        showSnackBarMessage(tvShowList.get(position).getTitle());
+    }
 
+    private void setupRecyclerView() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                visibleItemCount = recyclerView.getChildCount();
+                totalItemCount = layoutManager.getItemCount();
+                firstVisibleItem = layoutManager.findFirstCompletelyVisibleItemPosition();
+
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                        pageCount++;
+                    }
+                }
+
+                if (!loading && (totalItemCount - visibleItemCount) <=
+                        (firstVisibleItem + visibleThreshold)) {
+                    requestShowList(pageCount);
+                    showSnackBarMessage("Loading more Tv Shows...");
+                    loading = true;
+                }
+            }
+        });
+        recyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * This function display SnackBar with a message when called.
+     *
+     * @param message
+     */
+    private void showSnackBarMessage(String message) {
+        Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
     }
 }
