@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.adapter.TvShowAdapter;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.TvShow;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
@@ -31,7 +32,8 @@ import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
  * Created by abhay on 28/03/17.
  */
 
-public class PopularShowFragment extends Fragment {
+public class PopularShowFragment extends Fragment implements
+        TvShowAdapter.OnTvShowClickListener {
 
     @BindView(R.id.popular_movie_show_rv)
     RecyclerView recyclerView;
@@ -39,9 +41,9 @@ public class PopularShowFragment extends Fragment {
     private GridLayoutManager layoutManager;
 
     private ArrayList<TvShow> tvShowList;
+    private TvShowAdapter adapter;
 
     public PopularShowFragment() {
-
     }
 
     @Nullable
@@ -52,6 +54,7 @@ public class PopularShowFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         tvShowList = new ArrayList<>();
+        adapter = new TvShowAdapter(getContext(), tvShowList, this);
 
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         float width = displayMetrics.widthPixels / displayMetrics.density;
@@ -59,7 +62,7 @@ public class PopularShowFragment extends Fragment {
 
         layoutManager = new GridLayoutManager(getContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
-
+        recyclerView.setAdapter(adapter);
 
         return rootView;
     }
@@ -109,4 +112,8 @@ public class PopularShowFragment extends Fragment {
 
     }
 
+    @Override
+    public void onShowClick(View view, int position) {
+
+    }
 }
