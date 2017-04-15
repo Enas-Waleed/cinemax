@@ -72,7 +72,7 @@ public class PopularShowFragment extends Fragment implements
 
         layoutManager = new GridLayoutManager(getContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
-
+        recyclerView.setHasFixedSize(true);
         setupRecyclerView();
 
         requestShowList(pageCount);

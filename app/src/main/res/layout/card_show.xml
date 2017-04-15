@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/tv_show_poster"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/two_fourty_dp_dimen"
+        android:layout_height="240dp"
         android:scaleType="centerCrop"
         tools:src="@drawable/ic_movie" />
 

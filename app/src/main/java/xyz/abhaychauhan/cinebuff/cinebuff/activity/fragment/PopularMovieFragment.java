@@ -66,7 +66,7 @@ public class PopularMovieFragment extends Fragment implements
 
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PopularMovieAdapter(getActivity(), movieList, this);
-
+        recyclerView.setHasFixedSize(true);
         getMovieList(pageCount);
         setupRecyclerViewOnScroll();
 

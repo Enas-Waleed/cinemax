@@ -66,7 +66,7 @@ public class TopRatedMovieFragment extends Fragment implements
         gridLayoutManager = new GridLayoutManager(getContext(), spanCount);
         recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new TopRatedAdapter(getContext(), moviesList, this);
-
+        recyclerView.setHasFixedSize(true);
         getTopRatedMovieList(pageCount);
         setupRecyclerViewOnScroll();
 

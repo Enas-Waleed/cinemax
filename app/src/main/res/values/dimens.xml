@@ -20,6 +20,7 @@
 
     <dimen name="three_twenty_dp_dimen">320dp</dimen>
     <dimen name="two_fourty_dp_dimen">240dp</dimen>
+    <dimen name="dimen_220_dp">220dp</dimen>
     <dimen name="two_hundred_dp_dimen">200dp</dimen>
     <dimen name="one_eighty_dp_dimen">180dp</dimen>
     <dimen name="one_fourty_dp_dimen">140dp</dimen>
