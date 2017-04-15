@@ -131,7 +131,11 @@ public class PopularShowFragment extends Fragment implements
             String title = show.optString(Constants.ORIGINAL_NAME);
             double voteAverage = show.optDouble(Constants.VOTE_AVERAGE);
             String firstAirDate = show.optString(Constants.FIRST_AIR_DATE);
-            TvShow tvShow = new TvShow(id, posterPath, title, voteAverage, firstAirDate);
+            String backdropPath = show.optString(Constants.BACKDROP_PATH);
+            String overview = show.optString(Constants.OVERVIEW);
+            int voteCount = show.optInt(Constants.VOTE_COUNT);
+            TvShow tvShow = new TvShow(id, posterPath, backdropPath, title, voteAverage,
+                    firstAirDate, overview, voteCount);
             tvShowList.add(tvShow);
         }
         adapter.notifyDataSetChanged();
