@@ -79,13 +79,14 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.action_tv_shows:
                 intent = new Intent(this, TvShowActivity.class);
                 startActivity(intent);
-                return true;
+                break;
             case R.id.action_feedback:
                 break;
             case R.id.action_settings:
                 break;
         }
-        return false;
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override

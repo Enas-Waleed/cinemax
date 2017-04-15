@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/one_fourty_dp_dimen"
     android:layout_height="@dimen/three_twenty_dp_dimen"
-    android:elevation="@dimen/eight_dp_dimen"
-    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/eight_dp_dimen"
     android:layout_marginLeft="@dimen/four_dp_dimen"
     android:layout_marginRight="4dp"
     android:layout_marginTop="@dimen/eight_dp_dimen"
-    android:layout_marginBottom="@dimen/eight_dp_dimen"
+    android:elevation="@dimen/eight_dp_dimen"
+    android:orientation="vertical"
     card_view:cardCornerRadius="@dimen/four_dp_dimen">
 
     <RelativeLayout
@@ -36,20 +36,20 @@
                 android:id="@+id/movie_title_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:maxLines="2"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sixteen_sp_dimen"
                 android:textStyle="normal"
-                tools:text="Fifty Shades Darker"
-                android:layout_alignParentTop="true"/>
+                tools:text="Fifty Shades Darker" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/movie_rating_tv"
