@@ -18,9 +18,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import xyz.abhaychauhan.cinebuff.cinebuff.R;
+import xyz.abhaychauhan.cinebuff.cinebuff.activity.model.TvShow;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.NetworkController;
 import xyz.abhaychauhan.cinebuff.cinebuff.activity.utils.TmdbUrl;
 
@@ -35,6 +38,8 @@ public class PopularShowFragment extends Fragment {
 
     private GridLayoutManager layoutManager;
 
+    private ArrayList<TvShow> tvShowList;
+
     public PopularShowFragment() {
 
     }
@@ -45,6 +50,8 @@ public class PopularShowFragment extends Fragment {
         View rootView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_show_popular,
                 container, false);
         ButterKnife.bind(this, rootView);
+
+        tvShowList = new ArrayList<>();
 
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         float width = displayMetrics.widthPixels / displayMetrics.density;

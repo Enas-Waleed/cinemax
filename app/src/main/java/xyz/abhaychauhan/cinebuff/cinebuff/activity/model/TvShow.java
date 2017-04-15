@@ -12,11 +12,20 @@ public class TvShow {
     private double voteAverage;
     private String firstAirDate;
 
-    public TvShow(String posterPath, String title, int id, double voteAverage,
+    /**
+     * Constructor TvShow
+     *
+     * @param id
+     * @param posterPath
+     * @param title
+     * @param voteAverage
+     * @param firstAirDate
+     */
+    public TvShow(int id, String posterPath, String title, double voteAverage,
                   String firstAirDate) {
+        this.id = id;
         this.posterPath = posterPath;
         this.title = title;
-        this.id = id;
         this.voteAverage = voteAverage;
         this.firstAirDate = firstAirDate;
     }
