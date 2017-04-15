@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/two_hundred_dp_dimen"
             android:scaleType="fitXY"
-            tools:src="@drawable/movie_cover" />
+            tools:src="@drawable/ic_movie" />
 
         <TextView
             android:id="@+id/movie_title_tv"

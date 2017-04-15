@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/two_fourty_dp_dimen"
             android:scaleType="centerCrop"
-            tools:src="@drawable/poster" />
+            tools:src="@drawable/ic_movie" />
 
         <RelativeLayout
             android:layout_width="match_parent"

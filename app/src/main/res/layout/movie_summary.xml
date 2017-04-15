@@ -23,7 +23,7 @@
                 android:layout_width="@dimen/one_fourty_dp_dimen"
                 android:layout_height="@dimen/two_fourty_dp_dimen"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/poster" />
+                tools:src="@drawable/ic_movie" />
 
             <LinearLayout
                 android:layout_width="match_parent"
